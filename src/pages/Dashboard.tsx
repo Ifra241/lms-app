@@ -1,5 +1,6 @@
+import { Button } from "antd";
 import { supabase } from "../supabase/supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
@@ -9,7 +10,16 @@ const LogoutButton = () => {
     navigate("/"); // ya "/login" — jahan redirect karna ho
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
-};
+  return (
+    <>
+    <button onClick={handleLogout}>Logout</button>
+
+    <Button type="primary"><Link to={'/create-course'}>CreateCourse</Link></Button>
+    </>
+
+
+  );
+
+}
 
 export default LogoutButton;
