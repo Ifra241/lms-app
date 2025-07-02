@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
+import CreateCourse from "../pages/CreateCourse";
 
 
 
@@ -13,6 +14,7 @@ export default function AppRoutes(){
             <Route path="/" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
             <Route path="/dashboard" element={<ProtectedRoute> <Dashboard/>  </ProtectedRoute> }/>
+              <Route path="/create-course" element={<CreateCourse />} />
         </Routes>
     );
 }
