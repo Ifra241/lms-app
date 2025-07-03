@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button,Input,Form,Upload, message } from "antd";
+import { Button,Input,Form,Upload, message, Card } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadChangeParam } from 'antd/es/upload/interface';
 import { uploadThumbnail,createCourse } from "../services/courseService";
@@ -16,7 +16,11 @@ const CreateCourse =()=>{
 
 
     const handleThumbnailChange=(info:UploadChangeParam )=>{
-        const file = info.file?.originFileObj;
+
+        const file = info.fileList?.[0]?.originFileObj;
+         console.log("Upload Info:", info);
+          console.log("File selected:", file);
+
         if(file){
         setThumbnail(file as File);
         }
@@ -37,7 +41,8 @@ const CreateCourse =()=>{
                 message.success("Course created successfuly!");
                 form .resetFields();
                 setThumbnail(null);
-            }catch{
+            }catch(err){
+                 console.error("Course creation error:", err);
                 message.error("Something went wrong");
             }
             setLoading(false);
@@ -47,6 +52,7 @@ const CreateCourse =()=>{
 
     return(
         <div>
+            <Card>
             <h2>Create New Course</h2>
 
             <Form layout="vertical"
@@ -70,7 +76,8 @@ const CreateCourse =()=>{
             beforeUpload={()=>false}
             onChange={handleThumbnailChange}
             showUploadList={false}
-             accept="image/*" >
+             accept="image/*"
+              maxCount={1}  >
                 <Button icon={<UploadOutlined />}> Upload Thumbnail</Button>
 
             </Upload>
@@ -78,12 +85,14 @@ const CreateCourse =()=>{
 
         </Form.Item>
          <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Submit (disabled for now)
+          <Button type="primary" htmlType="submit" block loading={loading} >
+          submit 
           </Button>
         </Form.Item>
+        
 
             </Form>
+            </Card>
         </div>
     );
 }
