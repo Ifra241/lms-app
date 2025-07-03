@@ -16,11 +16,13 @@ import type { Course } from "../types/course.types";
 
 
 //insert course function
-    export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string)=>{
+    export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string,createdBy: string
+)=>{
 
     const { error:insertError }=await supabase.from("courses").insert({
         ...values,
         thumbnail_url:thumbnailUrl,
+        created_by: createdBy
     });
     if(insertError){
         throw new Error("Course creation failed");

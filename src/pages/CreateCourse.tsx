@@ -4,6 +4,8 @@ import { UploadOutlined } from '@ant-design/icons';
 import type { UploadChangeParam } from 'antd/es/upload/interface';
 import { uploadThumbnail,createCourse } from "../services/courseService";
 import type { CreateCourseFormValues } from "../types/course.types";
+import { useUser } from "@supabase/auth-helpers-react";
+
 
 
 
@@ -12,6 +14,8 @@ const CreateCourse =()=>{
     const[thumbnail,setThumbnail]=useState<File|null>(null)
       const [loading, setLoading] = useState(false);
         const [form] = Form.useForm();
+        const user = useUser();
+
 
 
 
@@ -36,7 +40,7 @@ const CreateCourse =()=>{
             try{
                 const thumbnailUrl=await uploadThumbnail(thumbnail);
 
-                await createCourse(values,thumbnailUrl);
+                await createCourse(values,thumbnailUrl,user!.id);
                    console.log("Form submitted")
                 message.success("Course created successfuly!");
                 form .resetFields();
