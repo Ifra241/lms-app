@@ -2,32 +2,47 @@ import { Modal ,Form,Input, Upload, Button, message} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
+import { addChapter, uploadVedio } from "../services/courseService";
 
 
 interface ModalProps{
     open:boolean;
  onClose: () => void;
+  courseId: string | null;
+ 
 
 }
 
-const AddChapterModal=( {open,onClose}:ModalProps)=>{
+const AddChapterModal=( {open,onClose,courseId }:ModalProps)=>{
     const[video,setVideo]=useState<File|null>(null);
     const[loading,setLoading]=useState(false);
 const [form]=Form.useForm();
 
 const handleVedioChange=(info: UploadChangeParam<UploadFile>)=>{
-    const file=info.file?.originFileObj;
-    if(file)setVideo(file as File)
+      const latestFile = info.fileList[info.fileList.length - 1]?.originFileObj;
+
+    console.log("Video file:", latestFile);
+
+    if(latestFile)setVideo(latestFile as File)
 };
 const handleSubmit= async(values:{title:string})=>{
     if(!video){
         message.error("Please Upload a Vedio file");
         return;
     }
+     if (!courseId) {
+    message.error("Course ID is missing");
+    return;
+  }
     setLoading(true);
-    console.log(values.title);
     try{
-         message.success("Chapter added!");
+        const videoUrl = await uploadVedio(video); 
+      await addChapter({title: values.title,
+        video_url: videoUrl,
+          course_id: courseId,
+    });
+       
+   message.success("Chapter added!");
     form.resetFields();
     setVideo(null);
     onClose();
@@ -59,7 +74,8 @@ const handleSubmit= async(values:{title:string})=>{
 
                 <Form.Item
                 label="Upload Vedio">
-                    <Upload beforeUpload={()=>false}onChange={handleVedioChange}>
+                    <Upload beforeUpload={()=>false}onChange={handleVedioChange}  accept="video/*"
+           showUploadList={false}>
                         <Button icon={<UploadOutlined/>}>Upload vedio</Button>
                     </Upload>
 

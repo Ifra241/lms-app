@@ -1,6 +1,7 @@
 import { supabase } from "../supabase/supabaseClient";
 import type { CreateCourseFormValues} from "../types/course.types";
 import type { Course } from "../types/course.types";
+import type{Chapter}from "../types/course.types"
 
 //uplodthumbnail function
     export const uploadThumbnail = async(thumbnail:File):Promise<string>=>{
@@ -40,6 +41,34 @@ import type { Course } from "../types/course.types";
 
   return data as Course[];
 };
+//upload vedio Function
 
-    
+export const uploadVedio=async(vedio:File):Promise<string>=>{
+    const fileName=`${Date.now()}_${vedio.name}`;
+  const {error:uploadError}=await supabase.storage.from("chapter-videos").upload(fileName,vedio);
+  if(uploadError){
+    console.error("Upload error:", uploadError);
+    throw new Error("Failed Upload vedio");}
+    const publicUrl=`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/chapter-videos/${fileName}`;
+    return publicUrl;
+}
+    //Add chapter Function
+    export const addChapter=async(chapter:Chapter)=>{
+        const{data,error}=await supabase.from("chapter").insert([chapter]);
+        if (error) {
+    throw error;
+  }
+
+  return data;
+    };
+    //getChapterBycourseId
+
+    export const getChapterBycourseId=async(courseId:string)=>{
+
+        const{data,error}=await supabase.from("chapter").select("*").eq("course_id",courseId);
+    if (error) throw error;
+  return data;
+};
+
+
 

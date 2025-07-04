@@ -9,3 +9,11 @@ export interface Course extends CreateCourseFormValues{
   created_at: string;
     
 }
+
+export interface Chapter {
+  title: string;
+  video_url: string;
+  course_id: string;
+  created_at?:string;
+  id?:string
+}

@@ -5,6 +5,7 @@ import type { UploadChangeParam } from 'antd/es/upload/interface';
 import { uploadThumbnail,createCourse } from "../services/courseService";
 import type { CreateCourseFormValues } from "../types/course.types";
 import { useUser } from "@supabase/auth-helpers-react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -15,6 +16,7 @@ const CreateCourse =()=>{
       const [loading, setLoading] = useState(false);
         const [form] = Form.useForm();
         const user = useUser();
+        const navigate=useNavigate();
 
 
 
@@ -45,6 +47,7 @@ const CreateCourse =()=>{
                 message.success("Course created successfuly!");
                 form .resetFields();
                 setThumbnail(null);
+                navigate('/mycourse');
             }catch(err){
                  console.error("Course creation error:", err);
                 message.error("Something went wrong");
@@ -89,8 +92,8 @@ const CreateCourse =()=>{
 
         </Form.Item>
          <Form.Item>
-          <Button type="primary" htmlType="submit" block loading={loading} >
-          submit 
+          <Button type="primary" htmlType="submit" block loading={loading}   >
+              submit 
           </Button>
         </Form.Item>
         
