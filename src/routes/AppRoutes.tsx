@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import CreateCourse from "../pages/CreateCourse";
 import MyCourses from "../pages/MyCourses";
+import CourseDetail from "../pages/CourseDetail"
+import AllCourses from "../pages/AllCourses";
 
 
 
@@ -17,6 +19,10 @@ export default function AppRoutes(){
             <Route path="/dashboard" element={<ProtectedRoute> <Dashboard/>  </ProtectedRoute> }/>
               <Route path="/create-course" element={<CreateCourse />} />
               <Route path="/mycourse" element={<MyCourses/>}/>
+              <Route path="/course-detail/:courseId" element={<CourseDetail />} />
+              <Route path="/all-courses" element={<AllCourses />} />
+
+
         </Routes>
     );
 }

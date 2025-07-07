@@ -5,7 +5,7 @@ import { getCoursesByTeacher } from "../services/courseService";
 import type { Course ,Chapter} from "../types/course.types";
 import AddChapterModal from "../components/AddChapterModal";
 import { getChapterBycourseId } from "../services/courseService";
-
+import { Link } from "react-router-dom";
 const MyCourses =()=>{
     const user = useUser();
     const [courses, setCourses] = useState<Course[]>([]);
@@ -48,6 +48,8 @@ const [chapters, setChapters] = useState<Record<string, Chapter[]>>({});
 
   if(loading)return<Spin tip="Loading Courses..."/>
 
+ 
+
 
   return(
     <div>
@@ -55,15 +57,12 @@ const [chapters, setChapters] = useState<Record<string, Chapter[]>>({});
       <Row gutter={[16, 16]}>
         {courses.map((course) => (
           <Col key={course.id} xs={24} sm={12} md={8}>
-            <Card
-              title={course.title}
-              cover={<img src={course.thumbnail_url} alt="thumbnail" />}
 
-              
-              actions={[
-                <Button type="link" onClick={()=>openModal(course.id)}>Add Chapter</Button>
-              ]}
-              >
+      <Link to={`/course-detail/${course.id}`}>
+            <Card
+            
+              title=  {course.title}
+              cover={<img src={course.thumbnail_url} alt="thumbnail" />} >
                 <strong>Chapters:</strong>
               <ul>
                 {(chapters[course.id] || []).map((ch) => (
@@ -71,9 +70,14 @@ const [chapters, setChapters] = useState<Record<string, Chapter[]>>({});
                 ))}
               </ul>
             </Card>
+            </Link>
+              <Button type="primary" onClick={()=>openModal(course.id)}>Add Chapter</Button>
+
+
              </Col>
               ))}
                </Row>
+
                      <AddChapterModal open={isModalOpen} onClose={closeModal} courseId={selectedCourseId} />
 
     </div>

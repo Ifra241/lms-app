@@ -15,6 +15,8 @@ const LogoutButton = () => {
     <button onClick={handleLogout}>Logout</button>
 
     <Button type="primary"><Link to={'/create-course'}>CreateCourse</Link></Button>
+    <Link to="/all-courses">Explore Courses</Link>
+
     </>
 
 

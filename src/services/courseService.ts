@@ -3,6 +3,7 @@ import type { CreateCourseFormValues} from "../types/course.types";
 import type { Course } from "../types/course.types";
 import type{Chapter}from "../types/course.types"
 
+
 //uplodthumbnail function
     export const uploadThumbnail = async(thumbnail:File):Promise<string>=>{
         const fileName = `${Date.now()}_${thumbnail.name}`;
@@ -17,7 +18,7 @@ import type{Chapter}from "../types/course.types"
 
 
 //insert course function
-    export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string,createdBy: string
+  export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string,createdBy: string
 )=>{
 
     const { error:insertError }=await supabase.from("courses").insert({
@@ -41,6 +42,26 @@ import type{Chapter}from "../types/course.types"
 
   return data as Course[];
 };
+//getCoursebyId
+export const getCourseById=async(courseId:string):Promise<Course>=>{
+
+  const{data,error}=await supabase.from("courses").select("*").eq("id",courseId)
+  .single();// single course milega
+  if(error||!data){
+     throw new Error("Failed to fetch course");
+  }
+
+  return data;
+
+  };
+  //get all courses
+  export const getAllCourses = async (): Promise<Course[]> => {
+  const { data, error } = await supabase.from("courses").select("*");
+  if (error) throw new Error("Failed to fetch all courses");
+  return data;
+};
+
+
 //upload vedio Function
 
 export const uploadVedio=async(vedio:File):Promise<string>=>{
@@ -69,6 +90,29 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
     if (error) throw error;
   return data;
 };
+
+//handelENROLL
+ export const enrollCourse=async(courseId:string,userId:string)=>{
+  //check already enroll
+  const{data:existing}=await supabase.from("enrollments").select("*").eq("user_id", userId).eq("course_id", courseId)
+  if(existing && existing.length>0){
+    console.warn("Yoy already enrolled in this course.")
+    return;
+  }
+  //in sert enrollment
+  const{error}=await supabase.from("enrollments").insert([
+    {
+       user_id: userId,
+      course_id: courseId,
+ 
+    },
+  ]);
+  if(error){
+    throw new Error("Enrollment failed");
+  }
+
+};
+
 
 
 
