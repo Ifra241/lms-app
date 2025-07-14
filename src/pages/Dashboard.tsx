@@ -1,13 +1,23 @@
-import { Layout,Menu} from "antd";
+import { Button, Layout,Menu} from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Dashbord.css"
+import { logout } from "../Slice/authSlice";
+import { useDispatch } from "react-redux";
+import { LogoutOutlined} from "@ant-design/icons";
 
 const{Content,Sider}=Layout;
 
 const Dashboard=()=>{
   const navigate=useNavigate();
   const location=useLocation();
-  
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
+
 
   return(
 
@@ -28,6 +38,10 @@ const Dashboard=()=>{
             { key: "all-courses", label: "Explore Courses" },
           ]}
         />
+         <Button danger icon={<LogoutOutlined />} onClick={handleLogout}>
+              Logout
+            </Button>
+     
       </Sider>
       <Layout>
         <Content className="Lms-Content">
