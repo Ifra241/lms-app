@@ -1,19 +1,23 @@
 import { Modal ,Form,Input, Upload, Button, message} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
-import { addChapter, uploadVedio } from "../services/courseService";
+import { addChapter, uploadVedio ,updateChapter} from "../services/courseService";
+import type { Chapter } from "../types/course.types";
 
 
 interface ModalProps{
     open:boolean;
  onClose: () => void;
   courseId: string | null;
+  editingChapter?:Chapter|null;
+    onEditSuccess?: () => void;
+    onAddSuccess?: () => void;
+
  
 
 }
-
-const AddChapterModal=( {open,onClose,courseId }:ModalProps)=>{
+const AddChapterModal=( {open,onClose,courseId ,editingChapter,onEditSuccess,onAddSuccess}:ModalProps)=>{
     const[video,setVideo]=useState<File|null>(null);
     const[loading,setLoading]=useState(false);
 const [form]=Form.useForm();
@@ -25,29 +29,61 @@ const handleVedioChange=(info: UploadChangeParam<UploadFile>)=>{
 
     if(latestFile)setVideo(latestFile as File)
 };
+useEffect(()=>{
+  if(editingChapter){
+    form.setFieldsValue({title:editingChapter.title});
+  }else{
+    form.resetFields();
+    setVideo(null);
+  }
+},[editingChapter,form])
+
+
+
+
 const handleSubmit= async(values:{title:string})=>{
-    if(!video){
-        message.error("Please Upload a Vedio file");
-        return;
-    }
      if (!courseId) {
     message.error("Course ID is missing");
     return;
   }
     setLoading(true);
     try{
-        const videoUrl = await uploadVedio(video); 
+      let videoUrl=editingChapter?.video_url||"";
+      if(video){
+         videoUrl = await uploadVedio(video);
+       }
+       //Editing Mode
+       console.log("Updating chapter with ID:", editingChapter?.id);
+
+if(editingChapter?.id){
+  await updateChapter(editingChapter.id,{
+    title:values.title,
+    video_url:videoUrl
+  });
+  message.success("Chapter updated!");
+        onEditSuccess?.();
+
+}else{
+   if (!video) {
+          message.error("Please upload a video file");
+          setLoading(false);
+          return;
+        }
+       
       await addChapter({title: values.title,
         video_url: videoUrl,
           course_id: courseId,
+
     });
        
    message.success("Chapter added!");
+   onAddSuccess?.();
+   }
     form.resetFields();
     setVideo(null);
     onClose();
   } catch {
-    message.error("Failed to add chapter");
+    message.error(editingChapter?"Failed to edit chapter":"Failed to add chapter");
   }
   setLoading(false);
 
@@ -59,11 +95,11 @@ const handleSubmit= async(values:{title:string})=>{
         <Modal
         open={open}
         onCancel={onClose}
-        title="Add new Chapter"
+        title={editingChapter?"Edit Chapter":"Add Chapter"}
         onOk={()=>form.submit()}
               confirmLoading={loading}
 
-        okText="Add chapter">
+        okText={editingChapter?"Edit":"Add"}>
             <Form layout="vertical" form={form} onFinish={handleSubmit}>
                 <Form.Item
                 label="Chapter Title"

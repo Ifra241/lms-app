@@ -1,27 +1,41 @@
-import { Button } from "antd";
-import { supabase } from "../supabase/supabaseClient";
-import { useNavigate,Link } from "react-router-dom";
+import { Layout,Menu} from "antd";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import "../styles/Dashbord.css"
 
-const LogoutButton = () => {
-  const navigate = useNavigate();
+const{Content,Sider}=Layout;
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/"); // ya "/login" — jahan redirect karna ho
-  };
+const Dashboard=()=>{
+  const navigate=useNavigate();
+  const location=useLocation();
+  
 
-  return (
-    <>
-    <button onClick={handleLogout}>Logout</button>
+  return(
 
-    <Button type="primary"><Link to={'/create-course'}>CreateCourse</Link></Button>
-    <Link to="/all-courses">Explore Courses</Link>
+     <Layout>
+      <Sider theme="light" className="Lms-Sider">
+        <div className="Sider-title">LMS</div>
+        <Menu
+          mode="inline"
+          selectedKeys={[location.pathname.split("/").pop() || "dashboard"]}
+          onClick={(e) => {
+            navigate(`/dashboard/${e.key === "dashboard" ? "" : e.key}`);
+          }}
+          items={[
+            { key: "dashboard", label: "Dashboard" },
+            {key:"enrolledcourses", label:"Study Courses"},
+            { key: "create-course", label: "Create Course" },
+            { key: "mycourse", label: "My Courses" },
+            { key: "all-courses", label: "Explore Courses" },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Content className="Lms-Content">
+   <Outlet />
+  </Content>
+</Layout>
 
-    </>
-
-
+    </Layout>
   );
-
-}
-
-export default LogoutButton;
+};
+export default Dashboard;

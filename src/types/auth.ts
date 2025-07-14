@@ -1,10 +1,12 @@
 export type SignupFormValues = {
   email: string;
-  password: string|number;
+  password: string;
   fullName: string;
+  profilePic?: File;
+  profilePicUrl?:string;
 };
 
 export type LoginFormValues = {
   email: string;
-  password: string|number;
+  password: string
 };

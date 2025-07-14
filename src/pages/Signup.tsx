@@ -8,11 +8,14 @@ const { Title } = Typography;
 
 
 
+
 export default function Signup() {
     const navigate=useNavigate();
+    const [form] = Form.useForm();
+
     const onFinish = async(values:SignupFormValues)=>{
 
-        const{ email,password,fullName }=values;
+        const{ email,password,fullName}=values;
 
         try{
         const{data,error}=await signUpUser ({  email,  password,  fullName});
@@ -39,8 +42,7 @@ export default function Signup() {
         <Card>
         <Title level={2}>Sign Up</Title>
 
-
-        <Form layout='vertical' onFinish={onFinish}>
+           <Form   form={form}layout='vertical' onFinish={onFinish}>
 
             <Form.Item label="Full Name" name="fullName" rules={[{required:true}]}>
                 <Input placeholder='Enter Your Full Name'/>
@@ -69,6 +71,17 @@ export default function Signup() {
                 > 
                  <Input.Password placeholder='Confrim your password'/>
                  </Form.Item>
+
+        <Form.Item label="Profile Picture (optional)" name="profilePic">
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      form.setFieldsValue({ profilePic: file });
+    }}
+  />
+</Form.Item>         
                     
 
                 <Form.Item>

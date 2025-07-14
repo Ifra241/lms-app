@@ -21,15 +21,17 @@ import type{Chapter}from "../types/course.types"
   export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string,createdBy: string
 )=>{
 
-    const { error:insertError }=await supabase.from("courses").insert({
+    const { data,error }=await supabase.from("courses").insert({
         ...values,
         thumbnail_url:thumbnailUrl,
-        created_by: createdBy
-    });
-    if(insertError){
-        throw new Error("Course creation failed");
-        
+        created_by: createdBy,
+    })
+    .select()
+    .single();
+    if(error||!data){
+        throw new Error("Course creation failed");   
     }
+    return data;
     };
 
     // Get courses by teacher
@@ -82,6 +84,21 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
 
   return data;
     };
+    //getchapterbyId
+    export const getChapterById = async (chapterId: string): Promise<Chapter> => {
+  const { data, error } = await supabase
+    .from("chapter")
+    .select("*")
+    .eq("id", chapterId)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as Chapter;
+};
+
     //getChapterBycourseId
 
     export const getChapterBycourseId=async(courseId:string)=>{
@@ -90,16 +107,37 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
     if (error) throw error;
   return data;
 };
+//update chapter
+export const updateChapter = async (chapterId: string, updates: Partial<Chapter>) => {
+  const { error } = await supabase
+    .from("chapter")
+    .update(updates)
+    .eq("id", chapterId);
 
+  if (error) throw error;
+};
+//Delte chapter
+export const deleteChapter=async(chapterId:string)=>{
+  const{error}=await supabase.from("chapter").delete().eq("id",chapterId)
+  if(error){
+    throw error;
+  }
+};
 //handelENROLL
  export const enrollCourse=async(courseId:string,userId:string)=>{
   //check already enroll
-  const{data:existing}=await supabase.from("enrollments").select("*").eq("user_id", userId).eq("course_id", courseId)
+  const{data:existing}=await supabase.from("enrollments").select("*")
+  
+.match({user_id :userId,course_id:courseId});
+console.log("Existing Enrollment:", existing);
+
   if(existing && existing.length>0){
     console.warn("Yoy already enrolled in this course.")
     return;
   }
-  //in sert enrollment
+    console.log("Sending to Supabase:", { userId, courseId });
+
+  //insert enrollment
   const{error}=await supabase.from("enrollments").insert([
     {
        user_id: userId,
@@ -108,10 +146,84 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
     },
   ]);
   if(error){
+      console.error("Insert error:", error.message);
+
     throw new Error("Enrollment failed");
   }
 
 };
+//get enroll courses
+export const getEnrolledCourses =async(userId:string):Promise<Course[]>=>{
+  const{data, error}=await supabase.from("enrollments").select("courses!enrollments_course_id_fkey(*)")
+
+   .eq("user_id", userId);
+    if(error){
+      console.error("Supabase error",error)
+      throw new Error("Could not fetch Enrolled courses");
+    }
+    const coursesOnly =data.map((entry)=>entry.courses as unknown as Course);
+      return coursesOnly;
+
+  };
+
+  //get course state
+
+  export const getCourseStats=async(teacherId:string)=>{
+    const{data:courses,error:courseError}=await supabase.from("courses").select("id,title").eq("created_by",teacherId)
+    if(courseError)throw courseError;
+    const stats=[];
+    for(const course of courses){
+      const{count,error:countError}=await supabase.from("enrollments").select("*",{count:"exact",head:true}).eq("course_id", course.id);
+        if (countError) throw countError;
+         stats.push({
+      course: course.title,
+      students: count ?? 0,
+    });
+  }
+
+  return stats;
+}
+//MarkChapterWatched
+export const markChapterAsWatched = async (userId: string, chapterId: string) => {
+  const { data, error } = await supabase
+    .from("watched_chapters")
+    .upsert([
+      {
+        user_id: userId,
+        chapter_id: chapterId,
+        is_watched: true,
+      },
+    ],    { onConflict: 'user_id,chapter_id',}
+
+
+  );
+  if (error) {
+    throw new Error("Failed to mark chapter as watched");
+  }
+
+  return data;
+};
+// get watched chapter
+
+export const getWatchedChapter=async (userId:string):Promise<string[]>=>{
+  const{data,error}=await supabase.from("watched_chapters").select("chapter_id") .eq("user_id",userId)
+  if(error){
+    console.error("Error fetching watched chapters:", error.message);
+    return [];
+  }
+
+  return data.map((item) => item.chapter_id);
+}
+
+  
+
+
+    
+
+
+
+
+
 
 
 

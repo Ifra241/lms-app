@@ -6,6 +6,7 @@ import { uploadThumbnail,createCourse } from "../services/courseService";
 import type { CreateCourseFormValues } from "../types/course.types";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
+import "./../styles/CreateCourse.css";
 
 
 
@@ -42,12 +43,13 @@ const CreateCourse =()=>{
             try{
                 const thumbnailUrl=await uploadThumbnail(thumbnail);
 
-                await createCourse(values,thumbnailUrl,user!.id);
+              const course = await createCourse(values,thumbnailUrl,user!.id);
                    console.log("Form submitted")
                 message.success("Course created successfuly!");
                 form .resetFields();
                 setThumbnail(null);
-                navigate('/mycourse');
+                navigate(`/course-detail/${course.id}`);
+
             }catch(err){
                  console.error("Course creation error:", err);
                 message.error("Something went wrong");
@@ -58,8 +60,8 @@ const CreateCourse =()=>{
 
 
     return(
-        <div>
-            <Card>
+        <div className="Create-Container">
+            <Card className="create-card">
             <h2>Create New Course</h2>
 
             <Form layout="vertical"
