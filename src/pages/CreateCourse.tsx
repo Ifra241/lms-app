@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button,Input,Form,Upload, message, Card } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadChangeParam } from 'antd/es/upload/interface';
@@ -7,6 +7,7 @@ import type { CreateCourseFormValues } from "../types/course.types";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/CreateCourse.css";
+import { getProfile } from "../services/adminService";
 
 
 
@@ -18,11 +19,26 @@ const CreateCourse =()=>{
         const [form] = Form.useForm();
         const user = useUser();
         const navigate=useNavigate();
+        const userId = user?.id;
 
+        useEffect(() => {
+  if (!userId) return;
 
+  const checkBlocked = async () => {
+    try {
+      const profile = await getProfile(userId);
+      if (profile?.is_blocked_as_teacher) {
+        message.error("You are blocked!");
+      }
+    } catch (error) {
+      console.error("Failed to check status", error);
+    }
+  };
 
+  checkBlocked();
+}, [userId]);
 
-    const handleThumbnailChange=(info:UploadChangeParam )=>{
+ const handleThumbnailChange=(info:UploadChangeParam )=>{
 
         const file = info.fileList?.[0]?.originFileObj;
          console.log("Upload Info:", info);
@@ -33,6 +49,16 @@ const CreateCourse =()=>{
         }
     };
         const handleSubmit = async(values: CreateCourseFormValues)=>{
+            if (!userId) {
+  message.error("User not found");
+  return;
+}
+
+            const profile = await getProfile(userId!);
+  if (profile?.is_blocked_as_teacher) {
+    return message.error("You are blocked from creating a course.");
+  }
+
             if(!thumbnail){
                 message.error("Please select a thumbnail image");
                 return;
@@ -63,8 +89,7 @@ const CreateCourse =()=>{
         <div className="Create-Container">
             <Card className="create-card">
             <h2>Create New Course</h2>
-
-            <Form layout="vertical"
+                   <Form layout="vertical"
             onFinish={handleSubmit}>
                 <Form.Item
                 label="Course Title"
@@ -101,6 +126,8 @@ const CreateCourse =()=>{
         
 
             </Form>
+                
+
             </Card>
         </div>
     );

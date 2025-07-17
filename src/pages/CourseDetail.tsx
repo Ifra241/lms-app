@@ -33,6 +33,9 @@ const [selectedVideoUrl, setSelectedVideoUrl] = useState<string>("");
 const [selectedChapterId, setSelectedChapterId] = useState<string>("");
 const [watchedChapters, setWatchedChapters] = useState<string[]>([]);
 
+const [chapterActionLoading, setChapterActionLoading] = useState(false);
+
+
 
 
 
@@ -73,6 +76,7 @@ fetchData();},[courseId,userId])
 
 //handel delete
 const handelDelete=async(chapterId:string)=>{
+  setChapterActionLoading(true);
   try{
     await deleteChapter(chapterId);
     message.success("chapter Deleted")
@@ -84,6 +88,8 @@ const handelDelete=async(chapterId:string)=>{
   }catch{
     message.error("failed to delete")
 
+  }finally{
+    setChapterActionLoading(false);
   }
 };
 
@@ -128,7 +134,8 @@ const handelDelete=async(chapterId:string)=>{
             <div>
                 <Title level={4}>Chapters</Title>
                 
-                <Button hidden={!isTeacher} type="primary" onClick={()=>openModal(course.id)}>Add Chapter</Button>
+                <Button hidden={!isTeacher} type="primary" onClick={()=>openModal(course.id)}  loading={chapterActionLoading}
+>Add Chapter</Button>
                  {(isTeacher||isEnrolled)?(
 
                 <Table
@@ -172,7 +179,7 @@ const handelDelete=async(chapterId:string)=>{
         title:"Edit",
         render:(_:unknown,chapter:Chapter)=>(
         <Tooltip title="Edit">
-          <Button  icon={<EditOutlined />}onClick={()=>openModal(course.id,chapter)} />
+          <Button  icon={ chapterActionLoading?<Spin size="small"/>:<EditOutlined />}onClick={()=>openModal(course.id,chapter)} />
         </Tooltip>
         ),
         },
@@ -186,7 +193,7 @@ const handelDelete=async(chapterId:string)=>{
       okText="Yes"
       cancelText="No">
         <Tooltip title="Delete">
-          <Button danger icon={<DeleteOutlined />} />
+          <Button danger icon={chapterActionLoading?<Spin size="small"/>:<DeleteOutlined />} />
         </Tooltip>
         </Popconfirm>
         ),

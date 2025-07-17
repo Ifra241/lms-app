@@ -18,7 +18,8 @@ const AllCourses = () => {
     const fetchCourses = async () => {
       try {
         const data = await getAllCourses();
-        setCourses(data);
+        
+ setCourses(data);
         if(user){
           const enrolled=await getEnrolledCourses(user.id);
           const enrolledIds=enrolled.map((course)=>course.id);

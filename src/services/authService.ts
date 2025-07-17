@@ -11,7 +11,7 @@ export async function signUpUser({
     profilePicUrl,
 
 }:SignupFormValues){
-    return await supabase.auth.signUp({
+   const{data:signUpData,error:signUpError} = await supabase.auth.signUp({
         email,
         password,
         options:{
@@ -21,6 +21,20 @@ export async function signUpUser({
             },
         },
     });
+    if (signUpError)throw signUpError
+    const userId=signUpData.user?.id;
+    const userEmail=signUpData.user?.email;
+    if(userId&&userEmail){
+      const{error:Error}=await supabase.from("profile").insert([
+        {
+        id:userId,
+        full_name:fullName,
+        email:userEmail,
+        },
+      ]);
+      if(Error)throw Error;
+    }
+    return signUpData;
 }
 //Login
 export async function loginUser({email,password}:LoginFormValues){
@@ -54,3 +68,4 @@ export const uploadProfilePic = async (file: File): Promise<string | null> => {
 
   return publicUrl;
 };
+

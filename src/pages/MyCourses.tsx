@@ -18,7 +18,7 @@ const MyCourses =()=>{
         if(!user)return;
         try{
             const data =await getCoursesByTeacher(user.id);
-            setCourses(data);
+                        setCourses(data);
         }catch{
             message.error("Failed to Fetch");
         }
@@ -35,6 +35,11 @@ const MyCourses =()=>{
   return(
       <div className="Container">
          <h2 >My Courses</h2>
+         {courses.length===0?(
+                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>U are Blocked!</p>
+
+
+               ):(
       <Row gutter={[16, 16]} >
         {courses.map((course) => (
           <Col key={course.id}  md={6}>
@@ -53,6 +58,7 @@ const MyCourses =()=>{
              </Col>
               ))}
                </Row>
+               )}
 
 
     </div>

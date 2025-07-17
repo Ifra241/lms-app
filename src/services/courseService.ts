@@ -20,6 +20,15 @@ import type{Chapter}from "../types/course.types"
 //insert course function
   export const createCourse= async(values:CreateCourseFormValues,thumbnailUrl: string,createdBy: string
 )=>{
+  const{data:user,error:userError}=await supabase.from("profile").select("is_blocked_as_teacher").eq("id",createdBy).single();
+  if (userError || !user) {
+    throw new Error("Failed to verify teacher status");
+  }
+
+  if (user.is_blocked_as_teacher) {
+    throw new Error("Teacher is blocked from creating courses");
+  }
+
 
     const { data,error }=await supabase.from("courses").insert({
         ...values,
@@ -36,6 +45,15 @@ import type{Chapter}from "../types/course.types"
 
     // Get courses by teacher
     export const getCoursesByTeacher = async(teacherId:string):Promise<Course[]>=>{
+      const{data:user,error:userError}=await supabase.from("profile").select("is_blocked_as_teacher").eq("id",teacherId).single();
+  if (userError || !user) {
+    throw new Error("Failed to verify teacher status");
+  }
+
+  if (user.is_blocked_as_teacher) {
+    throw new Error("Teacher is blocked from creating courses");
+  }
+
         const{ data, error}=await supabase.from("courses").select("*").eq("created_by", teacherId);
           if (error) {
     console.error("Failed to fetch courses", error);
@@ -77,6 +95,7 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
 }
     //Add chapter Function
     export const addChapter=async(chapter:Chapter)=>{
+       
         const{data,error}=await supabase.from("chapter").insert([chapter]);
         if (error) {
     throw error;
@@ -109,6 +128,7 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
 };
 //update chapter
 export const updateChapter = async (chapterId: string, updates: Partial<Chapter>) => {
+   
   const { error } = await supabase
     .from("chapter")
     .update(updates)
@@ -118,6 +138,7 @@ export const updateChapter = async (chapterId: string, updates: Partial<Chapter>
 };
 //Delte chapter
 export const deleteChapter=async(chapterId:string)=>{
+   
   const{error}=await supabase.from("chapter").delete().eq("id",chapterId)
   if(error){
     throw error;
@@ -125,6 +146,16 @@ export const deleteChapter=async(chapterId:string)=>{
 };
 //handelENROLL
  export const enrollCourse=async(courseId:string,userId:string)=>{
+  const{data:userProfile,error:profileError}=await supabase.from("profile").select("is_blocked_as_student").eq("id",userId).single();
+  if (profileError) {
+    console.error("Profile fetch error:", profileError.message);
+    throw new Error("Could not verify user status.");
+  }
+   if (userProfile?.is_blocked_as_student) {
+    console.warn("Blocked user cannot enroll.");
+    throw new Error("You are blocked and cannot enroll in courses.");
+  }
+
   //check already enroll
   const{data:existing}=await supabase.from("enrollments").select("*")
   
@@ -154,6 +185,21 @@ console.log("Existing Enrollment:", existing);
 };
 //get enroll courses
 export const getEnrolledCourses =async(userId:string):Promise<Course[]>=>{
+   const { data: userProfile, error: profileError } = await supabase
+    .from("profile")
+    .select("is_blocked_as_student")
+    .eq("id", userId)
+    .single();
+
+  if (profileError) {
+    console.error("Error fetching profile:", profileError.message);
+    throw new Error("Could not check user status.");
+  }
+  if(userProfile?.is_blocked_as_student){
+    console.warn("Blocked user!")
+    return[];
+  }
+
   const{data, error}=await supabase.from("enrollments").select("courses!enrollments_course_id_fkey(*)")
 
    .eq("user_id", userId);
