@@ -35,8 +35,9 @@ const MyCourses =()=>{
   return(
       <div className="Container">
          <h2 >My Courses</h2>
+         {(courses== null)?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>Blocked</p>):(<p></p>)}
          {courses.length===0?(
-                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>U are Blocked!</p>
+                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>No course</p>
 
 
                ):(

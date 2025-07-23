@@ -132,6 +132,15 @@ export const getProfile = async (userId: string) => {
 
   return data;
 };
+//block course
+export const blockCourse=async(courseId:string,isBlocked:boolean)=>{
+    const{data,error}=await supabase.from("courses").update({is_blocked:isBlocked}).eq("id",courseId);
+    if(error){
+        console.error("Failed to block course",error.message);
+    throw error
+}
+return data;
+};                
 
 
 

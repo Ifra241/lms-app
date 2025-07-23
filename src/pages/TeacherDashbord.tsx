@@ -4,6 +4,7 @@ import {getCourseStats} from "../services/courseService";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
 import { Col, Row, Spin ,Statistic,Card} from "antd";
+import { Link } from "react-router-dom";
 
 
 type Stat={
@@ -25,6 +26,8 @@ const TeacherDashbord=()=>{
             if(!userId)return;
             try{
                 const res= await getCourseStats(userId);
+                      res.sort((a, b) => b.students - a.students);
+
                 setStats(res);
             }catch(error){
                 console.error("Failed to fetch stats",error)
@@ -43,18 +46,24 @@ const TeacherDashbord=()=>{
 
     return(
         <>
-                <div className="Container">
+                <div >
 
             <Row gutter={16} style={{ marginBottom: 30 }}>
   <Col span={6}>
+  <Link to="/dashboard/mycourse">
+
     <Card style={{width:200}}>
-      <Statistic
+      <Statistic 
         title="Total Courses"
         value={totalCourses}
         valueStyle={{ color: "#3f8600" }}
       />
+      
     </Card>
+    </Link>
+    
   </Col>
+
 
   <Col span={6}>
     <Card style={{width:200,padding:5}}>
@@ -67,8 +76,9 @@ const TeacherDashbord=()=>{
   </Col>
 </Row>
      
-
+<div>
        <TeacherChart data={stats}  />
+       </div>
         </div>
         </>
 

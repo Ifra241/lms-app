@@ -83,7 +83,7 @@ const StudentSummary=()=>{
                     {loadingEmail === record.email ? (
 
          <Spin size="small"/>
-                     ) :record.is_blocked_as_student ?( "Blocked" ):( "Active")}
+                     ) :record.is_blocked_as_student ?( "In Active" ):( "Active")}
         </Tag>
         </Popconfirm>
      

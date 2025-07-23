@@ -6,9 +6,10 @@ import type { Course,Chapter } from "../types/course.types";
 import AddChapterModal from "../components/AddChapterModal";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
-import { EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined} from "@ant-design/icons";
+import { EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined,MessageOutlined} from "@ant-design/icons";
 import { Tooltip,Popconfirm } from "antd";
 import VideoPlayerModal from "../components/VideoPlayerModal";
+import ChatModal from "../components/ChatModal";
 
 
 
@@ -26,19 +27,15 @@ const CourseDetail=()=>{
   const [editingChapter, setEditingChapter] = useState<Chapter | null>(null);
   const[isTeacher,setIsTeacher]=useState(false);
   const[isEnrolled,setIsEnrolled]=useState(false);
-  const userId=useSelector((state:RootState)=>state.auth.id);
-
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 const [selectedVideoUrl, setSelectedVideoUrl] = useState<string>("");
 const [selectedChapterId, setSelectedChapterId] = useState<string>("");
 const [watchedChapters, setWatchedChapters] = useState<string[]>([]);
-
 const [chapterActionLoading, setChapterActionLoading] = useState(false);
+const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
-
-
-
-
+const userId = useSelector((state: RootState) => state.auth.id);
+const auth = useSelector((state: RootState) => state.auth);
 
 
 useEffect(()=>{
@@ -136,7 +133,18 @@ const handelDelete=async(chapterId:string)=>{
                 
                 <Button hidden={!isTeacher} type="primary" onClick={()=>openModal(course.id)}  loading={chapterActionLoading}
 >Add Chapter</Button>
+
                  {(isTeacher||isEnrolled)?(
+
+                  <>
+                  <Button
+  icon={<MessageOutlined />}
+  style={{ marginLeft: 12 }}
+  onClick={() => setIsChatModalOpen(true)}
+>
+  Chat
+</Button>
+
 
                 <Table
                 dataSource={chapters}
@@ -151,29 +159,20 @@ const handelDelete=async(chapterId:string)=>{
                 title:"Video",
                               dataIndex: "video_url",
               render: (_:unknown,chapter:Chapter) => (
-                <Button type="link"onClick={() => {
+
+                               <Tooltip title={ "Watch Video"}>
+
+                <Button icon={<EyeOutlined />} type="link"onClick={() => {
           setSelectedVideoUrl(chapter.video_url);
           setSelectedChapterId(chapter.id!);
           setIsVideoModalOpen(true);
         }}
      >
-  Watch Video
-</Button>
-           ),
+</Button></Tooltip>
+           )
              },
 
-               {
-    title: "View",
-    render: (_: unknown, chapter: Chapter) => {
-      const isWatched=watchedChapters.includes(chapter.id!);
-      return(
-               <Tooltip title={isWatched?"Watched": "Watch Video"}>
-                 <Button
-        icon={ isWatched?<CheckOutlined/>:<EyeOutlined />}
-        /> </Tooltip>
-        );
-    },
-    },
+               
     { 
       hidden:!isTeacher,
         title:"Edit",
@@ -200,6 +199,7 @@ const handelDelete=async(chapterId:string)=>{
         },
       ]}
           />
+          </>
           ):(<></>)}
           
      <AddChapterModal open={isModalOpen} onClose={closeModal} courseId={selectedCourseId} editingChapter={editingChapter} onAddSuccess={async()=>{if(courseId){
@@ -213,6 +213,16 @@ const handelDelete=async(chapterId:string)=>{
     setWatchedChapters((prev) => [...prev, chapterId]);
   }}
 />
+<ChatModal
+  open={isChatModalOpen}
+  onClose={() => setIsChatModalOpen(false)}
+  senderId={userId!}
+  senderName={auth.email || "You"}
+
+    courseId={course.id}
+
+/>
+
   </div>
  </div>
     );

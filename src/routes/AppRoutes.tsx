@@ -14,6 +14,8 @@ import StatsCards from "../pages/AdminDashboard/StatsCards";
 import AdminCourses from "../pages/AdminDashboard/Courses";
 import TeacherSummary from "../pages/AdminDashboard/TeacherSummary";
 import StudentSummary from "../pages/AdminDashboard/StudentSummary";
+import ProfileDetailPage from "../pages/ProfileDetailPage";
+
 
 
 export default function AppRoutes(){
@@ -22,17 +24,9 @@ export default function AppRoutes(){
         <Routes>
             <Route path="/" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
-          <Route path="/mycourse" element={<MyCourses/>}/>
-             <Route path="/mycourse" element={<MyCourses/>}/>
                <Route path="/course-detail/:courseId" element={<CourseDetail/>}/>
-              <Route path="/all-courses" element={<AllCourses/>}/>
-              <Route path="/enrolledcourses"element={<DashboardHome/>}/>
-              <Route path="/chart"element={<TeacherDashbord/>}/>
-              <Route path="/admin"element={<AdminDashboard/>}/>
-              <Route path="/stats"element={<StatsCards/>}/>
-              <Route path="/courses"element={<AdminCourses/>}/>
-              <Route path="/teachers" element={<TeacherSummary/>}></Route>
-              <Route path="/students"element={<StudentSummary/>}/>
+               <Route path="/profile-detail" element={<ProfileDetailPage />} />
+
 
 
 

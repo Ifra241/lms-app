@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
-import { Progress, Table } from "antd";
+import { Progress, Table,Switch, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { getAllCoursesWithEnrollments } from "../../services/adminService";
+import { blockCourse, getAllCoursesWithEnrollments } from "../../services/adminService";
 
 
 type CourseItem = {
@@ -13,14 +13,13 @@ type CourseItem = {
   enrolled_students:number;
     expected_students: number;
       creator_email: string;
+      is_blocked:boolean;
+    };
 
-
-   
-  };
-
-
-const AdminCourses=()=>{
+   const AdminCourses=()=>{
     const[courses,setCourses]=useState<CourseItem[]>([]);
+    const [loadingCourseId, setLoadingCourseId] = useState<string | null>(null);
+
  useEffect(()=>{
         const fetchCourses=async()=>{
           try{
@@ -32,6 +31,18 @@ const AdminCourses=()=>{
         };
         fetchCourses();
       },[])
+      const handleBlockCourse=async(courseId:string,isBlocked:boolean)=>{
+        try{
+          setLoadingCourseId(courseId);
+          await blockCourse(courseId,!isBlocked)
+              message.success(`Course ${!isBlocked ? "blocked" : "unblocked"} successfully`);
+setCourses((prev)=>prev.map((item)=>item.id===courseId?{...item,is_blocked:!isBlocked}:item));
+ }catch{
+  message.error("Failed to update course status");
+ }finally{
+  setLoadingCourseId(null);
+ }
+      };
      
 
 
@@ -66,6 +77,17 @@ const AdminCourses=()=>{
     })
           : "—",
 
+        
+      },
+      {
+        title:"Blocked",
+        dataIndex:"is_blocked",
+        render:(_,record)=>(
+          <Switch
+          checked={record.is_blocked}
+          onChange={()=>handleBlockCourse(record.id,record.is_blocked)}
+          loading={loadingCourseId===record.id}/>
+        ),
         
       },
       

@@ -53,6 +53,7 @@ const AllCourses = () => {
     return(
         <div className="Container">
             <h2>All courses</h2>
+            
             <Row gutter={[16,16]}>
                 {courses.map((course)=>(
                     <Col key={course.id}xs={24}sm={12}md={6}>

@@ -76,7 +76,8 @@ export const getCourseById=async(courseId:string):Promise<Course>=>{
   };
   //get all courses
   export const getAllCourses = async (): Promise<Course[]> => {
-  const { data, error } = await supabase.from("courses").select("*");
+
+  const { data, error } = await supabase.from("courses").select("*").eq("is_blocked",false);
   if (error) throw new Error("Failed to fetch all courses");
   return data;
 };

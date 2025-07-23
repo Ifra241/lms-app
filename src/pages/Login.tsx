@@ -5,13 +5,10 @@ import type { LoginFormValues } from "../types/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Slice/authSlice";
 import { supabase } from "../supabase/supabaseClient";
-//import { useSelector } from "react-redux";
-//import type { RootState } from "../store";
 
 
 
 export default function Login(){
-//const profilePic = useSelector((state: RootState) => state.auth.profilePic);
 
 
   const navigate=useNavigate();
@@ -35,27 +32,29 @@ export default function Login(){
               return;
 
       }
-      const res=await supabase.from("profiles").select("role").eq("id",user.id).single();
+      const res=await supabase.from("profile").select("role").eq("id",user.id).single();
       const role=res.data?.role??"student";
 
-      const profilePic = user.user_metadata?.profilePic ?? null;
 
 
       dispatch(setUser({
         id:user.id,
         email:user.email??"",
         role,
-        profilePic,
 
       }));
       localStorage.setItem("user",JSON.stringify({
         id:user.id,
         email:user.email??"",
         role,
-         profilePic, 
       }))
       message.success("Login successful");
-      navigate('/dashboard')
+      if (role === 'admin') {
+  navigate('/admin');
+} else {
+  navigate('/dashboard');
+}
+
 
 
       }catch(err){

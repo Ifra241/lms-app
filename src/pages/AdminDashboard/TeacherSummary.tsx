@@ -16,12 +16,6 @@ type SummaryItem={
 
 };
     
-
-
-
-
-
-
 const TeacherSummary=()=>{
     const[data,setData]=useState<SummaryItem[]>([]);
 
@@ -89,11 +83,11 @@ const TeacherSummary=()=>{
   key: "is_blocked_as_teacher",
   render: (isBlocked: boolean, record) => (
     <Select
-      defaultValue={isBlocked ? "blocked" : "active"}
+      defaultValue={isBlocked ? "inactive" : "active"}
       onChange={(value) => handleChange(record.email, value === "blocked")}
       options={[
         { value: "active", label: "Active" },
-        { value: "blocked", label: "Blocked" },
+        { value: "inactive", label: "In Active" },
       ]}
       style={{ width: 120 }}
     />

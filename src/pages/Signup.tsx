@@ -1,6 +1,8 @@
-import {Card ,Form, Input, Button, Typography,message} from 'antd';
+import {Card ,Form, Input, Button, Typography,message, Upload} from 'antd';
 import { Link,useNavigate } from 'react-router-dom';
-import { signUpUser } from '../services/authService';
+import { signUpUser, uploadProfilePic} from '../services/authService';
+import { UploadOutlined } from "@ant-design/icons";
+
 
 import type { SignupFormValues } from '../types/auth';
 
@@ -13,24 +15,27 @@ export default function Signup() {
     const navigate=useNavigate();
     const [form] = Form.useForm();
 
-    const onFinish = async(values:SignupFormValues)=>{
+    const onFinish = async(values:SignupFormValues&{profilePic?:File})=>{
 
         const{ email,password,fullName}=values;
-
         try{
-        const{data,error}=await signUpUser ({  email,  password,  fullName});
-        if(error){
-            message.error(error.message)
-        }else{
+            let profilePicUrl=null;
+            if(values.profilePic){
+                profilePicUrl=await uploadProfilePic(values.profilePic);
+            }
+           
+
+    
+        const res=await signUpUser ({  email,  password,  fullName,profilePic:profilePicUrl,})
             message.success('Account created!')
-            console.log('signup Sucess:',data);
+            console.log('signup Sucess:',res);
             navigate('/')
-        }
+        
      }catch(err){
       message.error('Something went wrong during signup.');
     console.error(err);
   }
-    }
+    };
   return(
 
     <div style={{
@@ -72,17 +77,23 @@ export default function Signup() {
                  <Input.Password placeholder='Confrim your password'/>
                  </Form.Item>
 
-        <Form.Item label="Profile Picture (optional)" name="profilePic">
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      const file = e.target.files?.[0];
-      form.setFieldsValue({ profilePic: file });
-    }}
-  />
-</Form.Item>         
-                    
+       <Form.Item
+  label="Profile Picture (optional)"
+  name="profilePic"
+  valuePropName="file"
+  getValueFromEvent={(e) => {
+    if (Array.isArray(e)) return e;
+    return e?.fileList?.[0]?.originFileObj || null;
+  }}
+>
+     <Upload beforeUpload={() => false} maxCount={1} showUploadList={true}>
+    <Button icon={<UploadOutlined />}>Select File</Button>
+  </Upload>
+
+
+
+</Form.Item>
+             
 
                 <Form.Item>
                     <Button type='primary' htmlType='submit' block>
@@ -94,4 +105,4 @@ export default function Signup() {
         </Card>
     </div>
   );
-}
+};

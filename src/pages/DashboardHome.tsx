@@ -46,13 +46,13 @@ const DashboardHome=()=>{
         <div className="Container">
             <Title level={3}> Enrolled Courses  </Title>
              {courses.length===0?(
-                <p>You are blocked!</p>
+                <p>You are Blocked!</p>
             ):(
            
                         <Row gutter={[16,16]}>
 
             {courses.map((course)=>(
-                <Col xs={24}sm={12}md={8}lg={6}key={course.id}>
+                <Col xs={24}sm={12}md={8}lg={6}key={course.id} >
                    <Link to={`/course-detail/${course.id}`}>
                     <Card
                                                 title={course.title}
