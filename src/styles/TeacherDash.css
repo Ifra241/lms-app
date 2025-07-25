@@ -1,0 +1,21 @@
+.Row-Container{
+    margin: 30px;
+    display: flex;
+    align-items:center;
+    
+}
+.Total_Card{
+    cursor: pointer;
+    background-color: aliceblue;
+    width: 10vw;
+}
+.T_Container{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+   
+
+}
+

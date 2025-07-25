@@ -15,8 +15,11 @@ const Dashboard=()=>{
 
   return(
        <>
+      
+       
+       
   <Layout>
-
+    
       <Sider theme="light" className="Lms-Sider">
         <div className="Sider-title">LMS</div>
         <div style={{height:"90%",marginBottom:"-10px"}}>
@@ -34,12 +37,12 @@ const Dashboard=()=>{
             { key: "all-courses", label: "Explore Courses" },
           ]}
         />
-        <br></br>
         <div style={{ padding: "16px 16px 8px 16px" }}>
           <div
         style={{ padding: "16px", cursor: "pointer" }}
         onClick={() => setShowProfile(!showProfile)}
       >
+        
       
     < ProfileHeader/>
     </div>
@@ -54,7 +57,13 @@ const Dashboard=()=>{
     </div>
   </div>
   <LogOut/>
+  
+
         </Sider>
+        </Layout>
+
+
+
        <Layout>
   <Layout>
         <Content className="Lms-Content">
@@ -64,7 +73,7 @@ const Dashboard=()=>{
         </Layout>
 
 
-    </Layout>
+   
     </>
   );
 };

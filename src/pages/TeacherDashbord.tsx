@@ -6,6 +6,8 @@ import type { RootState } from "../store";
 import { Col, Row, Spin ,Statistic,Card} from "antd";
 import { Link } from "react-router-dom";
 import StudentSummaryModal from "../components/StudentSummaryModal";
+import "../styles/TeacherDash.css"
+
 
 
 type Stat={
@@ -53,13 +55,13 @@ const TeacherDashbord=()=>{
 
     return(
         <>
-                <div >
+                <div className="T_Container">
 
-            <Row gutter={16} style={{ marginBottom: 30 }}>
+            <Row gutter={16}  className=" Row-Container">
   <Col span={6}>
   <Link to="/dashboard/mycourse">
 
-    <Card style={{width:200,cursor:"pointer"}}>
+    <Card  className="Total_Card">
       <Statistic 
         title="Total Courses"
         value={totalCourses}
@@ -71,7 +73,7 @@ const TeacherDashbord=()=>{
     
   </Col>
           <Col span={6}>
-    <Card style={{width:200,padding:5}}
+    <Card className="Total_Card"
     onClick={() => setOpen(true)}>
       <Statistic
         title="Total Students"
@@ -81,7 +83,7 @@ const TeacherDashbord=()=>{
     </Card>
   </Col>
         <Col span={6}>
-    <Card style={{width:200,padding:5}}>
+    <Card className="Total_Card">
       <Statistic
         title="Total Enrollments"
         value={totalenrollment}

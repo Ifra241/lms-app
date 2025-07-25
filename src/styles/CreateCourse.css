@@ -1,6 +1,6 @@
 .Create-Container{
     height: 100vh;
-    width: 100vw;    
+    width: 100vw;   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,9 +8,15 @@
    
 }
 .create-card{
-    width: 100%;
-    min-width: 500px;
+    width:50vw;
   padding: 32px;
   border-radius: 12px;
+
+}
+.Create_title{
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Times New Roman', Times, serif;
+    color: rgb(21, 99, 242);
 
 }

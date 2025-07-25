@@ -1,10 +1,10 @@
 import { useState,useEffect } from "react";
 import { getEnrolledCourses } from "../services/courseService";
 import type { Course } from "../types/course.types";
-import { Card, Row, Col, Spin, Typography} from "antd";
+import {Row, Col, Spin, Typography} from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
-import { Link } from "react-router-dom";
 import { getProfile } from "../services/adminService";
+import CourseCard from "../components/CourseCard";
 
 
 const{Title}=Typography
@@ -56,36 +56,22 @@ const DashboardHome=()=>{
                 <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are not enrolled in any course!</p>
             ):
             (
-           
-                        <Row gutter={[16,16]}>
+           <Row gutter={[16, 16]}>
+  {courses.map((course) => (
+    <Col key={course.id} xs={24} sm={12} md={8} lg={6}>
+      <CourseCard
+        id={course.id}
+        title={course.title}
+        thumbnail_url={course.thumbnail_url}
+        description={course.description}
+        isEnrolled={true}
+      />
+    </Col>
+  ))}
+</Row>
 
-            {courses.map((course)=>(
-                <Col xs={24}sm={12}md={8}lg={6}key={course.id} >
-                   <Link to={`/course-detail/${course.id}`}>
-                    <Card
-                                                title={course.title}
-
-                    cover={
-                        <img  className="course-thumbnail"alt={course.title}src={course.thumbnail_url}/>
-                    } >
-                        <Card.Meta
-                            description={course.description}
-                            />
-                        
-
-                    </Card>
-                    </Link>
-
-
-                </Col>
-            )
-
-            )}
-        
-
-
-
-            </Row>
+                       
+               
             )}
         </div>
 

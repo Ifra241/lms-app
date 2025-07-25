@@ -1,0 +1,23 @@
+.Profile_card{
+    background-color:#fcf8f8ff;
+
+    width: 180px;
+    margin-left: -5px;
+    
+}
+.Profile_Wrapper{
+    width: 500px;
+    height: 600px;
+    box-shadow: 0 10px 30px rgb(0, 0, 0,0.1);
+   
+}
+.Profile_Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+       background: linear-gradient(135deg, #f6f6f7, #919090); 
+
+
+}

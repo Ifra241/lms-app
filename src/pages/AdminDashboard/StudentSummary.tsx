@@ -15,14 +15,19 @@ type SummaryItem={
 const StudentSummary=()=>{
     const[data,setData]=useState<SummaryItem[]>();
     const [loadingEmail, setLoadingEmail] = useState("");
+        const[loading,setLoading]=useState<boolean>(false);
+
 
     useEffect(()=>{
         const fetchData=async()=>{
             try{
+                setLoading(true);
                 const data=await getStudentSummary();
                 setData(data);
             }catch(error){
                 console.error("Failed to fetch",error)
+            }finally{
+                setLoading(false);
             }
         };
         fetchData();
@@ -97,6 +102,7 @@ const StudentSummary=()=>{
         },
 
     ];
+    if(loading)return<Spin size="large"></Spin>
     return(
         <div className="Container">
             <h2>Student Summary</h2>

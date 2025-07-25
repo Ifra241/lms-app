@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card, Col, Row, Spin, message } from "antd";
+import { Col, Row, Spin, message } from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
 import { getCoursesByTeacher } from "../services/courseService";
 import type { Course} from "../types/course.types";
-import { Link } from "react-router-dom";
 import "../styles/AllCourses.css"
 import { getProfile } from "../services/adminService";
+import CourseCard from "../components/CourseCard";
 
 const MyCourses =()=>{
     const user = useUser();
@@ -50,24 +50,20 @@ const MyCourses =()=>{
 
 
                ):(
-      <Row gutter={[16, 16]} >
-        {courses.map((course) => (
-          <Col key={course.id}  md={6}>
+                <Row gutter={[16, 16]}>
+  {courses.map((course) => (
+    <Col key={course.id} md={6}>
+      <CourseCard
+        id={course.id}
+        title={course.title}
+        thumbnail_url={course.thumbnail_url}
+        isEnrolled={true}
+      />
+    </Col>
+  ))}
+</Row>
 
-      <Link to={`/course-detail/${course.id}`}>
-
-            <Card className="course-card"
-            
-              title=  {course.title}
-              cover={<img  className ="course-thumbnail"src={course.thumbnail_url} alt="thumbnail" />} >
-  
-            </Card>
-            </Link>
-
-
-             </Col>
-              ))}
-               </Row>
+    
                )}
 
 

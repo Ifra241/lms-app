@@ -2,6 +2,8 @@ import { useState,useEffect } from "react";
 import { Avatar, Button, Form, Input, Spin, Typography, message ,Card} from "antd";
 import { getCurrentUserProfile,getCurrentUser,updateProfile } from "../services/authService";
 import  type { UserProfile } from "../types/auth";
+import "../styles/Profile.css"
+
 
 
 const { Title,Text } = Typography;
@@ -59,10 +61,10 @@ type ProfileFormValues = {
 
 
   return(
-      <div style={{ maxWidth: 600, margin: "auto",display:"flex",justifyContent:"center",alignItems:"center" }}>
+      <div className="Profile_Container">
               
 
-      <Card>
+      <Card className="Profile_Wrapper">
         
         <div style={{ textAlign: "center", marginBottom: 20 }}>
             <h2>My Profile</h2>

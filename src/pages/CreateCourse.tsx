@@ -10,9 +10,6 @@ import "./../styles/CreateCourse.css";
 import { getProfile } from "../services/adminService";
 
 
-
-
-
 const CreateCourse =()=>{
     const[thumbnail,setThumbnail]=useState<File|null>(null)
       const [loading, setLoading] = useState(false);
@@ -88,7 +85,7 @@ const CreateCourse =()=>{
     return(
         <div className="Create-Container">
             <Card className="create-card">
-            <h2>Create New Course</h2>
+            <h2 className="Create_title">Create New Course</h2>
                    <Form layout="vertical"
             onFinish={handleSubmit}>
                 <Form.Item

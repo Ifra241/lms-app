@@ -12,8 +12,24 @@
     padding-left: 200px;
 }
 .Lms-Sider{
+      color: rgb(16, 16, 16);
     position: fixed;
     top: 0;
     left: 0;
      height: calc(99.9%);   
 }
+.Lms-Sider .ant-menu {
+  background-color: transparent;
+  color: white!important ;
+}
+.Lms-Sider .ant-menu-item-selected {
+  background-color: #3a3f58 ;
+  color: #ffffff ;
+}
+
+.Lms-Sider .ant-menu-item:hover {
+  background-color: #2c2f4a!important ;
+  color: #ffffff !important;
+}
+
+

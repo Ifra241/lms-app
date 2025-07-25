@@ -11,6 +11,9 @@ export async function signUpUser({
     profilePicUrl,
 
 }:SignupFormValues){
+  
+  
+
    const{data:signUpData,error:signUpError} = await supabase.auth.signUp({
         email,
         password,
@@ -57,9 +60,9 @@ export const getCurrentUser= async()=>{
     return{user:data?.user,error};
 };
 //Upload Profile Img
-
 export const uploadProfilePic = async (file: File): Promise<string | null> => {
   const fileName = `profile_${Date.now()}_${file.name}`;
+  
   const { data, error } = await supabase.storage
     .from("profile-pics")
     .upload(fileName, file);
@@ -69,12 +72,26 @@ export const uploadProfilePic = async (file: File): Promise<string | null> => {
     return null;
   }
 
-  const { data:publicUrldata } = supabase.storage
+  if (!data?.path) {
+    console.error("No path returned from upload");
+    return null;
+  }
+
+  const { data: publicUrlData } = supabase
+    .storage
     .from("profile-pics")
     .getPublicUrl(data.path);
 
-  return publicUrldata.publicUrl;
+  if (!publicUrlData?.publicUrl) {
+    console.error("No public URL returned");
+    return null;
+  }
+
+  console.log("Uploaded image URL:", publicUrlData.publicUrl);
+  return publicUrlData.publicUrl;
 };
+
+
 //get currn user profile
 
 export const getCurrentUserProfile = async () => {

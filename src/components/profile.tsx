@@ -3,6 +3,8 @@ import { useState,useEffect } from "react";
 import { getCurrentUserProfile,getCurrentUser } from "../services/authService";
 import { Avatar, Card, Spin,Typography } from "antd";
 const{Text,Title}=Typography;
+import "../styles/Profile.css"
+
 
 
 const ProfilePage=()=>{
@@ -35,9 +37,9 @@ const ProfilePage=()=>{
     if(loading)return <Spin size="large"/>
 
     return(
-        <div>
+        <div >
 
-            <Card>
+            <Card className="Profile_card">
                 <div style={{textAlign:"center"}}>
                     <Avatar size={100} src={profile?.profile_pic}/>
                     <Title level={3}>{profile?.full_name}</Title>

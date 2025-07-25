@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { blockTeacher, getTeacherSummary } from "../../services/adminService";
-import {message, Select, Table } from "antd";
+import {message, Select, Spin, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 type SummaryItem={
@@ -19,16 +19,21 @@ type SummaryItem={
 const TeacherSummary=()=>{
     const[data,setData]=useState<SummaryItem[]>([]);
     const [loadingTeacher, setLoadingTeacher] = useState<string | null>(null);
+        const[loading,setLoading]=useState<boolean>(false);
+
 
 
     useEffect(()=>{
         const fetchData=async()=>{
 
             try{
+              setLoading(true);
                 const summary=await getTeacherSummary();
                 setData(summary);
             }catch(error){
                 console.error("Failed to fetch",error);
+            }finally{
+              setLoading(false);
             }
         };
         fetchData();
@@ -57,6 +62,7 @@ setLoadingTeacher(email);
     setLoadingTeacher(null);
   }
 };
+if(loading)return<Spin size="large"></Spin>
 
 
     

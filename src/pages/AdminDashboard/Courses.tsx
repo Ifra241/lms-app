@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import { Progress, Table,Switch, message } from "antd";
+import { Progress, Table,Switch, message, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { blockCourse, getAllCoursesWithEnrollments } from "../../services/adminService";
 
@@ -19,14 +19,18 @@ type CourseItem = {
    const AdminCourses=()=>{
     const[courses,setCourses]=useState<CourseItem[]>([]);
     const [loadingCourseId, setLoadingCourseId] = useState<string | null>(null);
+    const[loading,setLoading]=useState<boolean>(false);
 
  useEffect(()=>{
         const fetchCourses=async()=>{
           try{
+            setLoading(true);
             const data =await getAllCoursesWithEnrollments();
             setCourses(data);
           }catch(error){
             console.error("Failed to fetch",error)
+          }finally{
+            setLoading(false);
           }
         };
         fetchCourses();
@@ -43,6 +47,7 @@ setCourses((prev)=>prev.map((item)=>item.id===courseId?{...item,is_blocked:!isBl
   setLoadingCourseId(null);
  }
       };
+      if(loading)return<Spin size="large"></Spin>
      
 
 
@@ -92,9 +97,6 @@ setCourses((prev)=>prev.map((item)=>item.id===courseId?{...item,is_blocked:!isBl
       },
       
       ];
-     
-  
-
     return (
     <div className="Container" style={{ padding: 24 }}>
       <h2>All Courses</h2>
@@ -103,6 +105,7 @@ setCourses((prev)=>prev.map((item)=>item.id===courseId?{...item,is_blocked:!isBl
         dataSource={courses}
         rowKey="id"
         pagination={false}
+          loading={loading}
       />
     </div>
   );
