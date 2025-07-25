@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
         okText="Ok"
         cancelText="No"
         onConfirm={handleLogout}>
-          <div style={{ padding: 16 }}>
+          <div>
         <Button icon={<LogoutOutlined/>}>LogOut</Button></div>
         </Popconfirm>
      

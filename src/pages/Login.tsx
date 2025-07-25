@@ -5,85 +5,97 @@ import type { LoginFormValues } from "../types/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Slice/authSlice";
 import { supabase } from "../supabase/supabaseClient";
+import "../styles/login.css"
 
 
 
-export default function Login(){
 
 
-  const navigate=useNavigate();
-  const dispatch=useDispatch();
+export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const onFinish=async(values: LoginFormValues)=>{
-    const{ email,password}=values;
-    try{
-      const{data,error}=await loginUser({
-        email,
-        password,
-      });
-      if(error){
+  const onFinish = async (values: LoginFormValues) => {
+    const { email, password } = values;
+    try {
+      const { data, error } = await loginUser({ email, password });
+      if (error) {
         message.error(error.message);
-              return;
-
+        return;
       }
-      const user=data.user;
-      if(!user){
+
+      const user = data.user;
+      if (!user) {
         message.error("No user");
-              return;
-
+        return;
       }
-      const res=await supabase.from("profile").select("role").eq("id",user.id).single();
-      const role=res.data?.role??"student";
 
+      const res = await supabase
+        .from("profile")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+      const role = res.data?.role ?? "student";
 
+      dispatch(
+        setUser({
+          id: user.id,
+          email: user.email ?? "",
+          role,
+        })
+      );
 
-      dispatch(setUser({
-        id:user.id,
-        email:user.email??"",
-        role,
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: user.id,
+          email: user.email ?? "",
+          role,
+        })
+      );
 
-      }));
-      localStorage.setItem("user",JSON.stringify({
-        id:user.id,
-        email:user.email??"",
-        role,
-      }))
       message.success("Login successful");
-      if (role === 'admin') {
-  navigate('/admin');
-} else {
-  navigate('/dashboard');
-}
 
-
-
-      }catch(err){
-        message.error('Something went wrong during login.');
+      if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      message.error("Something went wrong during login.");
       console.error(err);
     }
-    }
+  };
 
-  return(
-
-    <div>
-      <Card>
-
-     <Form layout="vertical" onFinish={onFinish}>
-
-<Form.Item label="Email" name="email" rules={[{required:true,type:"email",message:'Enter your valid email'}]}>
-        <Input placeholder="Enter your email"/>
-      </Form.Item>
-      <Form.Item label="Password" name='password' rules={[{required:true,message:'Enter your Password'}]}>
-        <Input.Password placeholder="Enter Your Password"/>
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>Login</Button>
-      </Form.Item>
-      If u dont have account<Link to='/signup'> Signup </Link>
-
-     </Form>
-
+  return (
+    <div className="login-wrapper">
+      <Card className="login-card">
+        <h2>Welcome Back</h2>
+        <Form layout="vertical" onFinish={onFinish}>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, type: "email", message: "Enter your valid email" }]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Enter your Password" }]}
+          >
+            <Input.Password placeholder="Enter Your Password" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Login
+            </Button>
+          </Form.Item>
+          <div className="login-link">
+            Don't have an account? <Link to="/signup">Signup</Link>
+          </div>
+        </Form>
       </Card>
     </div>
   );
-};
+}

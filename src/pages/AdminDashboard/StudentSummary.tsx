@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import {  Popconfirm, Spin, Table, Tag } from "antd";
+import {  message, Popconfirm, Spin, Table, Tag } from "antd";
 import { getStudentSummary } from "../../services/adminService";
 import type { ColumnsType } from "antd/es/table";
 import { blockStudent } from "../../services/adminService";
@@ -43,6 +43,11 @@ const StudentSummary=()=>{
         
         )
     );
+    message.success(isBlocked?"Student Blocked Successfuly!"
+        :"Student unblock Successfuly"
+
+    );
+   
     }catch(error){
         console.error("Failed to block",error)
         throw error;

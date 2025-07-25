@@ -10,11 +10,10 @@
     align-items: flex-start;
     justify-content: flex-start;
     padding-left: 200px;
-    margin:30px;
 }
 .Lms-Sider{
     position: fixed;
     top: 0;
     left: 0;
-    
+     height: calc(99.9%);   
 }

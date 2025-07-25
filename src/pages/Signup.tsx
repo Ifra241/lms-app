@@ -2,6 +2,8 @@ import {Card ,Form, Input, Button, Typography,message, Upload} from 'antd';
 import { Link,useNavigate } from 'react-router-dom';
 import { signUpUser, uploadProfilePic} from '../services/authService';
 import { UploadOutlined } from "@ant-design/icons";
+import "../styles/login.css"
+
 
 
 import type { SignupFormValues } from '../types/auth';
@@ -38,13 +40,8 @@ export default function Signup() {
     };
   return(
 
-    <div style={{
-        height:'100vh',
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-    }}>
-        <Card>
+    <div className="login-wrapper">
+        <Card className="login-card">
         <Title level={2}>Sign Up</Title>
 
            <Form   form={form}layout='vertical' onFinish={onFinish}>

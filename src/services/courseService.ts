@@ -229,7 +229,39 @@ export const getEnrolledCourses =async(userId:string):Promise<Course[]>=>{
   }
 
   return stats;
-}
+};
+//getUniqueStudents
+export const getUniqueStudents = async (teacherId: string) => {
+  //  Get all courses by this teacher
+  const { data: courses, error: courseError } = await supabase
+    .from("courses")
+    .select("id")
+    .eq("created_by", teacherId);
+
+  if (courseError) throw courseError;
+
+  const allStudentIds: string[] = [];
+
+  //  Loop through each course and collect user_ids from enrollments
+  for (const course of courses) {
+    const { data: enrollments, error: enrollmentError } = await supabase
+      .from("enrollments")
+      .select("user_id")
+      .eq("course_id", course.id);
+
+    if (enrollmentError) throw enrollmentError;
+
+    if (enrollments) {
+      allStudentIds.push(...enrollments.map((e) => e.user_id));
+    }
+  }
+
+//Get unique user_ids using Set
+  const uniqueStudentCount = new Set(allStudentIds).size;
+
+  return uniqueStudentCount;
+};
+
 //MarkChapterWatched
 export const markChapterAsWatched = async (userId: string, chapterId: string) => {
   const { data, error } = await supabase
@@ -261,7 +293,17 @@ export const getWatchedChapter=async (userId:string):Promise<string[]>=>{
 
   return data.map((item) => item.chapter_id);
 }
+///
 
+export async function getTeacherStudentSummary(teacherId:string) {
+  const { data, error } = await supabase
+    .from("teacher_student_enrollments_summary")
+    .select("*")
+    .eq("teacher_id", teacherId);
+
+  if (error) throw error;
+  return data;
+}
   
 
 

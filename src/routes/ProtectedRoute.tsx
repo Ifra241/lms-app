@@ -1,36 +1,27 @@
-import { useEffect,useState } from "react";
-import type { ReactNode } from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import{ getCurrentUser } from "../services/authService";
+import type { ReactNode } from "react";
+import type { RootState } from "../store";
 
-
-interface ProtectedRouteProps{
-    children:ReactNode;
-
+interface ProtectedRouteProps {
+  children: ReactNode;
+  requireAuth?: boolean;
+  onlyPublic?: boolean;
 }
-const ProtectedRoute=({ children }:  ProtectedRouteProps)=>{
-    const[loading,setLoading]=useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const checkUser = async () => {
-            
-      const { user} = await getCurrentUser();
+const AccessRoute = ({ children, requireAuth, onlyPublic }: ProtectedRouteProps) => {
+  const user = useSelector((state: RootState) => state.auth);
+  const isAuthenticated = !!user?.id;
 
-      if (user) {
-        setIsAuthenticated(true);
-      }
-      setLoading(false);
-    };
+  if (onlyPublic && isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
-    checkUser();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-
-  if (!isAuthenticated) return <Navigate to="/" replace />;
+  if (requireAuth && !isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   return <>{children}</>;
 };
 
-export default ProtectedRoute;
+export default AccessRoute;

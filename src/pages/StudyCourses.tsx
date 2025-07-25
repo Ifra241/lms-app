@@ -1,9 +1,10 @@
 import { useState,useEffect } from "react";
 import { getEnrolledCourses } from "../services/courseService";
 import type { Course } from "../types/course.types";
-import { Card, Row, Col, Spin, Typography, message } from "antd";
+import { Card, Row, Col, Spin, Typography} from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
 import { Link } from "react-router-dom";
+import { getProfile } from "../services/adminService";
 
 
 const{Title}=Typography
@@ -17,6 +18,7 @@ const DashboardHome=()=>{
 
     const[courses,setCourses]=useState<Course[]>([]);
     const[loading,setLoading]=useState(true);
+    const[isBlocked,setIsBlocked]=useState<boolean>(false);
 
 
     useEffect(()=>{
@@ -24,10 +26,13 @@ const DashboardHome=()=>{
         const fetchCourses=async()=>{
             
             try{
-                const enrolled =await getEnrolledCourses(userId);
-                if(enrolled.length===0){
-                    message.warning("You blocked");
+                const profile=await getProfile(userId);
+                if(profile?.is_blocked_as_student){
+                    setIsBlocked(true);
+                    return;
                 }
+                const enrolled =await getEnrolledCourses(userId);
+                
                 setCourses(enrolled);
             }catch(error){
                 console.error("Failed to Fetch",error)
@@ -45,9 +50,12 @@ const DashboardHome=()=>{
     return(
         <div className="Container">
             <Title level={3}> Enrolled Courses  </Title>
-             {courses.length===0?(
-                <p>You are Blocked!</p>
-            ):(
+             {isBlocked?(
+                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are Blocked!</p>
+            ):courses.length ===0?(
+                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are not enrolled in any course!</p>
+            ):
+            (
            
                         <Row gutter={[16,16]}>
 

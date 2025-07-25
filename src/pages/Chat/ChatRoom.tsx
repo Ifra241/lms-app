@@ -93,7 +93,7 @@ const handleDelete=async(messageId:string)=>{
     }catch(error){
       console.error("Failed to delete msg",error)
     }
-  }
+  };
 
 
 

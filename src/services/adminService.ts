@@ -115,7 +115,7 @@ export const blockTeacher=async(email:string,isBlocked:boolean)=>{
     if(error){
         console.error("Failed to block",error)
         throw error
-    }
+    };
     return data;
 };
 //get block teacher
@@ -128,7 +128,7 @@ export const getProfile = async (userId: string) => {
 
   if (error) {
     throw error;
-  }
+  };
 
   return data;
 };
@@ -138,7 +138,7 @@ export const blockCourse=async(courseId:string,isBlocked:boolean)=>{
     if(error){
         console.error("Failed to block course",error.message);
     throw error
-}
+};
 return data;
 };                
 

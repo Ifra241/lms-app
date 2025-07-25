@@ -11,22 +11,16 @@ const{Content,Sider}=Layout;
 const Dashboard=()=>{
   const navigate=useNavigate();
   const location=useLocation();
-
-  const[showProfile,setShowProfile]=useState<boolean>(false);
-
-  
-  
+ const[showProfile,setShowProfile]=useState<boolean>(false);
 
   return(
-<>
-    
-<Layout>
+       <>
+  <Layout>
 
       <Sider theme="light" className="Lms-Sider">
         <div className="Sider-title">LMS</div>
-         
-
-        <Menu
+        <div style={{height:"90%",marginBottom:"-10px"}}>
+         <Menu
           mode="inline"
           selectedKeys={[location.pathname.split("/").pop() || "dashboard"]}
           onClick={(e) => {
@@ -57,15 +51,12 @@ const Dashboard=()=>{
       </Link>
     )}
     </>
+    </div>
   </div>
   <LogOut/>
         </Sider>
        <Layout>
- 
-
-
-
-      <Layout>
+  <Layout>
         <Content className="Lms-Content">
    <Outlet />
   </Content>

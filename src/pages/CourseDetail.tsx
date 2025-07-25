@@ -59,6 +59,7 @@ try{
         setIsEnrolled(isEnrolled);
 
         const watched =await getWatchedChapter(userId);
+        console.log("Watched chapters:", watched);
         setWatchedChapters(watched);
     }
 
@@ -155,23 +156,36 @@ const handelDelete=async(chapterId:string)=>{
                     title:"Title",
                     dataIndex:"title",
                 },
-            {
-                title:"Video",
-                              dataIndex: "video_url",
-              render: (_:unknown,chapter:Chapter) => (
+                {
+  title: "Video",
+  dataIndex: "video_url",
+  render: (_: unknown, chapter: Chapter) => {
+    const isWatched = watchedChapters.includes(chapter.id!);
+    console.log("ChapterID",chapter.id,"watched",isWatched)
+    
+    return (
+      <Tooltip title={isWatched ? "Watched" : "Watch Video"}>
+        <Button
+          icon={
+            isWatched ? (
+              <CheckOutlined style={{ color: "green" }} />
+            ) : (
+              <EyeOutlined />
+            )
+          }
+          type="link"
+          onClick={() => {
+            setSelectedVideoUrl(chapter.video_url);
+            setSelectedChapterId(chapter.id!);
+            setIsVideoModalOpen(true);
+          }}
+        />
+      </Tooltip>
+    );
+  },
+},
 
-                               <Tooltip title={ "Watch Video"}>
-
-                <Button icon={<EyeOutlined />} type="link"onClick={() => {
-          setSelectedVideoUrl(chapter.video_url);
-          setSelectedChapterId(chapter.id!);
-          setIsVideoModalOpen(true);
-        }}
-     >
-</Button></Tooltip>
-           )
-             },
-
+            
                
     { 
       hidden:!isTeacher,

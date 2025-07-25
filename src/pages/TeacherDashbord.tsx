@@ -1,10 +1,11 @@
 import { useState,useEffect } from "react";
 import TeacherChart from "../components/TeacherChart";
-import {getCourseStats} from "../services/courseService";
+import {getCourseStats,getUniqueStudents} from "../services/courseService";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
 import { Col, Row, Spin ,Statistic,Card} from "antd";
 import { Link } from "react-router-dom";
+import StudentSummaryModal from "../components/StudentSummaryModal";
 
 
 type Stat={
@@ -17,6 +18,9 @@ const TeacherDashbord=()=>{
     const[loading,setLoading]=useState(true);
     const userId=useSelector((state:RootState)=>state.auth.id);
     const role=useSelector((state:RootState)=>state.auth.role);
+    const [uniqueStudents, setUniqueStudents] = useState(0);
+
+      const [open, setOpen] = useState(false);
 
     useEffect(()=>{
         console.log("userId:", userId);
@@ -27,6 +31,8 @@ const TeacherDashbord=()=>{
             try{
                 const res= await getCourseStats(userId);
                       res.sort((a, b) => b.students - a.students);
+                      const studentCount=await getUniqueStudents(userId);
+                      setUniqueStudents(studentCount);
 
                 setStats(res);
             }catch(error){
@@ -42,7 +48,8 @@ const TeacherDashbord=()=>{
 
       //calculate total
       const totalCourses = stats.length;
-      const totalStudents = stats.reduce((acc,item)=>acc+item.students,0);
+      const totalenrollment = stats.reduce((acc, item) => acc + item.students, 0);
+
 
     return(
         <>
@@ -52,25 +59,33 @@ const TeacherDashbord=()=>{
   <Col span={6}>
   <Link to="/dashboard/mycourse">
 
-    <Card style={{width:200}}>
+    <Card style={{width:200,cursor:"pointer"}}>
       <Statistic 
         title="Total Courses"
         value={totalCourses}
-        valueStyle={{ color: "#3f8600" }}
+        valueStyle={{ color: "#006d86ff" }}
       />
       
     </Card>
     </Link>
     
   </Col>
-
-
-  <Col span={6}>
-    <Card style={{width:200,padding:5}}>
+          <Col span={6}>
+    <Card style={{width:200,padding:5}}
+    onClick={() => setOpen(true)}>
       <Statistic
         title="Total Students"
-        value={totalStudents}
-        valueStyle={{ color: "#1890ff" }}
+        value={uniqueStudents}
+        valueStyle={{ color: "#5d18ffff" }}
+      />
+    </Card>
+  </Col>
+        <Col span={6}>
+    <Card style={{width:200,padding:5}}>
+      <Statistic
+        title="Total Enrollments"
+        value={totalenrollment}
+        valueStyle={{ color: "#1859ffff" }}
       />
     </Card>
   </Col>
@@ -78,6 +93,8 @@ const TeacherDashbord=()=>{
      
 <div>
        <TeacherChart data={stats}  />
+             <StudentSummaryModal open={open} onClose={() => setOpen(false)} />
+
        </div>
         </div>
         </>

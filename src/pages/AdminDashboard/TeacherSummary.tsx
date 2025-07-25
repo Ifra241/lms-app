@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import { blockTeacher, getTeacherSummary } from "../../services/adminService";
-import { Select, Table } from "antd";
+import {message, Select, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 type SummaryItem={
@@ -18,6 +18,8 @@ type SummaryItem={
     
 const TeacherSummary=()=>{
     const[data,setData]=useState<SummaryItem[]>([]);
+    const [loadingTeacher, setLoadingTeacher] = useState<string | null>(null);
+
 
     useEffect(()=>{
         const fetchData=async()=>{
@@ -31,19 +33,28 @@ const TeacherSummary=()=>{
         };
         fetchData();
     },[]);
+
     const handleChange = async (email: string, isBlocked: boolean) => {
-        
+setLoadingTeacher(email);        
   try {
     await blockTeacher(email,isBlocked);
+    
+
 
     setData((prevData) =>
       prevData?.map((item) =>
         item.email === email? { ...item, is_blocked_as_teacher: isBlocked } : item
       )
     );
+    message.success(isBlocked?"Teacher Blocked!"
+      :"Teacher Unblock"
+    );
+    
   } catch (error) {
     console.error("Failed to block teacher", error);
     throw error;
+  }finally{
+    setLoadingTeacher(null);
   }
 };
 
@@ -83,8 +94,12 @@ const TeacherSummary=()=>{
   key: "is_blocked_as_teacher",
   render: (isBlocked: boolean, record) => (
     <Select
+         loading={loadingTeacher === record.email} 
+
       defaultValue={isBlocked ? "inactive" : "active"}
-      onChange={(value) => handleChange(record.email, value === "blocked")}
+
+
+      onChange={(value) => handleChange(record.email, value === "inactive")}
       options={[
         { value: "active", label: "Active" },
         { value: "inactive", label: "In Active" },

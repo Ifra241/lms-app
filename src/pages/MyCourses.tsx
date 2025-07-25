@@ -5,11 +5,13 @@ import { getCoursesByTeacher } from "../services/courseService";
 import type { Course} from "../types/course.types";
 import { Link } from "react-router-dom";
 import "../styles/AllCourses.css"
+import { getProfile } from "../services/adminService";
 
 const MyCourses =()=>{
     const user = useUser();
     const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const[isBlocked,setIsBlocked]=useState<boolean>(false);
 
   
 //Fetch course
@@ -17,12 +19,18 @@ const MyCourses =()=>{
     const fetchCourses =async()=>{
         if(!user)return;
         try{
+          const profile=await getProfile(user.id);
+          if(profile?.is_blocked_as_teacher){
+            setIsBlocked(true);
+          }else{
             const data =await getCoursesByTeacher(user.id);
                         setCourses(data);
+                        }
         }catch{
             message.error("Failed to Fetch");
         }
         setLoading(false);
+        
     };
     fetchCourses();
   },[user]);
@@ -35,8 +43,9 @@ const MyCourses =()=>{
   return(
       <div className="Container">
          <h2 >My Courses</h2>
-         {(courses== null)?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>Blocked</p>):(<p></p>)}
-         {courses.length===0?(
+         {isBlocked?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>U are Blocked!</p>
+         ):
+         courses.length===0?(
                 <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>No course</p>
 
 
