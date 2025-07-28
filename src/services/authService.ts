@@ -20,7 +20,7 @@ export async function signUpUser({
         options:{
             data:{
                 fullName,
-                profilePic: profilePicUrl,
+               profilePicUrl,
             },
         },
     });

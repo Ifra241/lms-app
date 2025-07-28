@@ -49,7 +49,7 @@ const DashboardHome=()=>{
 
     return(
         <div className="Container">
-            <Title level={3}> Enrolled Courses  </Title>
+            <Title className="Course_title"level={3}> Enrolled Courses  </Title>
              {isBlocked?(
                 <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are Blocked!</p>
             ):courses.length ===0?(

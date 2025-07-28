@@ -109,10 +109,10 @@ if(editingChapter?.id){
                 </Form.Item>
 
                 <Form.Item
-                label="Upload Vedio">
+                label="Upload Video">
                     <Upload beforeUpload={()=>false}onChange={handleVedioChange}  accept="video/*"
            showUploadList={false}>
-                        <Button icon={<UploadOutlined/>}>Upload vedio</Button>
+                        <Button icon={<UploadOutlined/>}>Upload Video</Button>
                     </Upload>
 
                 </Form.Item>

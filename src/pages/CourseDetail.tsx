@@ -38,6 +38,19 @@ const userId = useSelector((state: RootState) => state.auth.id);
 const auth = useSelector((state: RootState) => state.auth);
 
 
+
+
+    //Refresh list
+
+const refreshChapterList = async () => {
+  if (courseId) {
+    const updatedChapter = await getChapterBycourseId(courseId);
+    setChapters(updatedChapter);
+  }
+};
+
+
+
 useEffect(()=>{
         const fetchData = async () => {
 
@@ -78,12 +91,8 @@ const handelDelete=async(chapterId:string)=>{
   try{
     await deleteChapter(chapterId);
     message.success("chapter Deleted")
-    //Refresh list
-    if(courseId){
-      const updatedChapter=await getChapterBycourseId(courseId);
-      setChapters(updatedChapter);
-    }
-  }catch{
+    refreshChapterList();
+      }catch{
     message.error("failed to delete")
 
   }finally{
@@ -104,7 +113,7 @@ const handelDelete=async(chapterId:string)=>{
       setEditingChapter(null);
     };
 
-   if (loading) return <Spin tip="Loading..." />;
+   if (loading) return <Spin tip="Loading..."/>;
 
   if (!course) return <div>Course not found</div>;
 
@@ -216,12 +225,10 @@ const handelDelete=async(chapterId:string)=>{
           </>
           ):(<></>)}
           
-     <AddChapterModal open={isModalOpen} onClose={closeModal} courseId={selectedCourseId} editingChapter={editingChapter} onAddSuccess={async()=>{if(courseId){
-      const updatedChapters = await getChapterBycourseId(courseId!);
-            setChapters(updatedChapters);
-     }
-
-    }}/>
+     <AddChapterModal open={isModalOpen} onClose={closeModal} courseId={selectedCourseId} editingChapter={editingChapter} onAddSuccess={refreshChapterList}
+     onEditSuccess={refreshChapterList}
+  
+    />
      <VideoPlayerModal open={isVideoModalOpen} videoUrl={selectedVideoUrl} onClose={()=>setIsVideoModalOpen(false)}  chapterId={selectedChapterId}
         onWatched={(chapterId) => {
     setWatchedChapters((prev) => [...prev, chapterId]);
@@ -240,5 +247,5 @@ const handelDelete=async(chapterId:string)=>{
   </div>
  </div>
     );
-}
+};
 export default CourseDetail;

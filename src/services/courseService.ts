@@ -123,7 +123,7 @@ export const uploadVedio=async(vedio:File):Promise<string>=>{
 
     export const getChapterBycourseId=async(courseId:string)=>{
 
-        const{data,error}=await supabase.from("chapter").select("*").eq("course_id",courseId);
+        const{data,error}=await supabase.from("chapter").select("*").eq("course_id",courseId).order("created_at", { ascending: true });
     if (error) throw error;
   return data;
 };
@@ -134,6 +134,7 @@ export const updateChapter = async (chapterId: string, updates: Partial<Chapter>
     .from("chapter")
     .update(updates)
     .eq("id", chapterId);
+    
 
   if (error) throw error;
 };

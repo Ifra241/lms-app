@@ -8,12 +8,9 @@ import { supabase } from "../supabase/supabaseClient";
 import "../styles/login.css"
 
 
-
-
-
-export default function Login() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+        export default function Login() {
+                 const navigate = useNavigate();
+                  const dispatch = useDispatch();
 
   const onFinish = async (values: LoginFormValues) => {
     const { email, password } = values;

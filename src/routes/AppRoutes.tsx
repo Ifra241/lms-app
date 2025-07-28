@@ -25,8 +25,6 @@ export default function AppRoutes(){
         <Routes>
             <Route path="/" element={ <AccessRoute onlyPublic><Login/> </AccessRoute>}/>
             <Route path="/signup" element={<AccessRoute onlyPublic><Signup/> </AccessRoute>}/>
-               <Route path="/course-detail/:courseId" element={<CourseDetail/>}/>
-               <Route path="/profile-detail" element={<ProfileDetailPage />} />
 
 
 
@@ -39,6 +37,8 @@ export default function AppRoutes(){
               <Route path="mycourse" element={<MyCourses />} />
               <Route path="course-detail/:courseId" element={<CourseDetail />} />
               <Route path="all-courses" element={<AllCourses />} />
+                 <Route path="profile-detail" element={<ProfileDetailPage />} />
+
               </Route>
                             <Route path="admin"element={<ProtectAdminRoute><AdminDashboard/> </ProtectAdminRoute>}>
                             <Route index element={<StatsCards />} />

@@ -13,6 +13,7 @@ export type LoginFormValues = {
 
 export type UserProfile = {
   id: string;
+  email:string;
   full_name: string;
   profile_pic: string;
   role: "student" | "teacher" | "admin";

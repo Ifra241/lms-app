@@ -117,7 +117,7 @@ const CreateCourse =()=>{
         </Form.Item>
          <Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}   >
-              submit 
+              Submit
           </Button>
         </Form.Item>
         

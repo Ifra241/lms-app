@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import {  Col, Row, Spin, message } from "antd";
+import {  Col, Row, Spin, message,Typography } from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
 import { getAllCourses, enrollCourse, getEnrolledCourses } from "../services/courseService";
 import type { Course } from "../types/course.types";
 import "../styles/AllCourses.css"
 import CourseCard from "../components/CourseCard";
+const{Title}=Typography
+
 
 const AllCourses = () => {
   const user = useUser();
@@ -49,7 +51,8 @@ const AllCourses = () => {
 
     return(
         <div className="Container">
-            <h2>All courses</h2>
+            <Title className="Course_title"level={3}> Enrolled Courses  </Title>
+
             <Row gutter={[18,12]}>
   {courses.map((course) => (
     <Col key={course.id} xs={24} sm={12} md={6}>

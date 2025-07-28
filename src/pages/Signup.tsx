@@ -18,12 +18,17 @@ export default function Signup() {
     const [form] = Form.useForm();
 
     const onFinish = async(values:SignupFormValues&{profilePic?:File})=>{
+        
 
         const{ email,password,fullName}=values;
+        
         try{
+            
             let profilePicUrl=null;
             if(values.profilePic){
                 profilePicUrl=await uploadProfilePic(values.profilePic);
+                  console.log("Uploaded profilePicUrl:", profilePicUrl);
+
             }
            
 
@@ -79,7 +84,6 @@ export default function Signup() {
   name="profilePic"
   valuePropName="file"
   getValueFromEvent={(e) => {
-    if (Array.isArray(e)) return e;
     return e?.fileList?.[0]?.originFileObj || null;
   }}
 >

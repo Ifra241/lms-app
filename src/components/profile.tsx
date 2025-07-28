@@ -1,4 +1,4 @@
-import type { UserProfile } from "../types/auth";
+/*import type { UserProfile } from "../types/auth";
 import { useState,useEffect } from "react";
 import { getCurrentUserProfile,getCurrentUser } from "../services/authService";
 import { Avatar, Card, Spin,Typography } from "antd";
@@ -59,4 +59,4 @@ const ProfilePage=()=>{
         </div>
     );
 };
-export default ProfilePage;
+export default ProfilePage;*/

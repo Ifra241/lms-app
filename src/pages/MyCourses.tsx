@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Spin, message } from "antd";
+import { Col, Row, Spin, message,Typography } from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
 import { getCoursesByTeacher } from "../services/courseService";
 import type { Course} from "../types/course.types";
 import "../styles/AllCourses.css"
 import { getProfile } from "../services/adminService";
 import CourseCard from "../components/CourseCard";
+const{Title}=Typography
+
 
 const MyCourses =()=>{
     const user = useUser();
@@ -42,8 +44,9 @@ const MyCourses =()=>{
 
   return(
       <div className="Container">
-         <h2 >My Courses</h2>
-         {isBlocked?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>U are Blocked!</p>
+                    <Title className="Course_title"level={3}>My Courses  </Title>
+
+         {isBlocked?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are Blocked!</p>
          ):
          courses.length===0?(
                 <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>No course</p>

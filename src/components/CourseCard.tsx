@@ -63,7 +63,7 @@ export default function CourseCard({
   );
 
   if (linkToDetail && isEnrolled) {
-    return <div onClick={() => navigate(`/course-detail/${id}`)}>{card}</div>;
+    return <div onClick={() => navigate(`/dashboard/course-detail/${id}`)}>{card}</div>;
   }
 
   return card;
