@@ -8,6 +8,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/CreateCourse.css";
 import { getProfile } from "../services/adminService";
+import { capitalizeWords} from "../utils/capitalizeWords";
 
 
 const CreateCourse =()=>{
@@ -46,10 +47,15 @@ const CreateCourse =()=>{
         }
     };
         const handleSubmit = async(values: CreateCourseFormValues)=>{
+
             if (!userId) {
   message.error("User not found");
   return;
 }
+  values.title = capitalizeWords(values.title.trim());
+  values.description=capitalizeWords(values.description.trim());
+
+
 
             const profile = await getProfile(userId!);
   if (profile?.is_blocked_as_teacher) {
@@ -71,7 +77,7 @@ const CreateCourse =()=>{
                 message.success("Course created successfuly!");
                 form .resetFields();
                 setThumbnail(null);
-                navigate(`/course-detail/${course.id}`);
+                navigate(`/dashboard/course-detail/${course.id}`);
 
             }catch(err){
                  console.error("Course creation error:", err);
@@ -128,5 +134,5 @@ const CreateCourse =()=>{
             </Card>
         </div>
     );
-}
+};
 export default CreateCourse;

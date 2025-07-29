@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
 import { addChapter, uploadVedio ,updateChapter} from "../services/courseService";
 import type { Chapter } from "../types/course.types";
-
+import { capitalizeWords } from "../utils/capitalizeWords";
 
 interface ModalProps{
     open:boolean;
@@ -47,6 +47,8 @@ const handleSubmit= async(values:{title:string})=>{
     return;
   }
     setLoading(true);
+    values.title=capitalizeWords(values.title.trim());
+  
     try{
       let videoUrl=editingChapter?.video_url||"";
       if(video){

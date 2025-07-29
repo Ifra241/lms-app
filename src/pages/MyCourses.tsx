@@ -55,7 +55,8 @@ const MyCourses =()=>{
                ):(
                 <Row gutter={[16, 16]}>
   {courses.map((course) => (
-    <Col key={course.id} md={6}>
+    <Col key={course.id} xs={24} sm={12} md={8} lg={6}>
+
       <CourseCard
         id={course.id}
         title={course.title}

@@ -55,9 +55,10 @@ const TeacherDashbord=()=>{
 
     return(
         <>
-                <div className="T_Container">
+                <div >
 
-            <Row gutter={16}  className=" Row-Container">
+                    <Row gutter={[16,16]}
+ className=" Row-Container">
   <Col span={6}>
   <Link to="/dashboard/mycourse">
 

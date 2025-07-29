@@ -4,6 +4,7 @@ import { getAdminStats, getAllUsers } from "../../services/adminService";
 import UserTabel from "../../components/UserTable";
 import Card from "antd/es/card/Card";
 import { Spin } from "antd";
+import "../../styles/StatsCard.css";
 
 
 
@@ -33,22 +34,25 @@ const StatsCard=()=>{
 
     
     return(
-        <>
-        <div className="Container">
-            <h2>StatsCard</h2>
+        <div className="StatsContainer">
+            <div>
             <AdminStats
              totalCourses={stats.totalCourses}
         totalTeachers={stats.totalTeachers}
         totalStudents={stats.totalStudents}
             />
-        </div>
+            </div>
+        
+          <div className="CenterCard">
+
 
           <Card title="All Users">
         <UserTabel users={users} />
       </Card>
+      </div>
         
         
-        </>
+        </div>
 
 
     );

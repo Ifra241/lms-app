@@ -3,8 +3,9 @@ import { Outlet, useNavigate, useLocation, Link} from "react-router-dom";
 import "../styles/Dashbord.css"
 import ProfileHeader from "../components/ProfileHeader";
 import { LogOut } from "../components/logout";
+import LmsHeader from "../components/Header";
 
-const{Content,Sider}=Layout;
+const { Header, Content, Sider } = Layout;
 
 const Dashboard=()=>{
   const navigate=useNavigate();
@@ -12,14 +13,22 @@ const Dashboard=()=>{
 
   return(
        <>
+        <Layout >
+      {/* TOP HEADER */}
+      <Header className="Lms-Header">
+        <LmsHeader />
+      </Header>
+
       
        
        
-  <Layout>
+  
+    <Layout>
+    
   {/*  Side Bar  */}
       <Sider theme="light" className="Lms-Sider">
         <div className="Sider-title">LMS</div>
-        <div style={{height:"90%",marginBottom:"-10px"}}>
+        <div >
          <Menu
           mode="inline"
           selectedKeys={[location.pathname.split("/").pop() || "dashboard"]}
@@ -41,10 +50,7 @@ const Dashboard=()=>{
         style={{ padding: "16px", cursor: "pointer" }}
       >
         
-                <Link to="/dashboard/profile-detail">
-
-    < ProfileHeader/>
-          </Link>
+                
 
     </div>
     <>
@@ -52,8 +58,15 @@ const Dashboard=()=>{
     </>
     </div>
   </div>
-  <LogOut/>
-  
+ 
+  <div style={{position:"fixed", left:"10px", bottom:"10px", width:"170px"}}>
+<div >
+        <Link to="/dashboard/profile-detail">
+    < ProfileHeader/> 
+          </Link>
+          <LogOut/>
+        </div>
+     </div>   
 
         </Sider>
               {/* Main Content Area */}
@@ -66,7 +79,8 @@ const Dashboard=()=>{
    <Outlet />
   </Content>
 </Layout>
-        </Layout>
+</Layout>
+</Layout>
 
 
 

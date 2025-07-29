@@ -30,7 +30,7 @@ const ProfileHeader = () => {
   if (loading) return <Spin size="small" />;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div style={{ padding:"2px",textAlign: "center" }}>
       <Avatar
         size={40}
         icon={!avatarUrl && <UserOutlined />}

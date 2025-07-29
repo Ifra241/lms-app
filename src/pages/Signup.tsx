@@ -58,7 +58,7 @@ export default function Signup() {
                 <Input placeholder='Enter Your Email'/>
             </Form.Item>
 
-            <Form.Item label="Password" name="password" rules={[{required:true}]}>
+            <Form.Item label="Password" name="password" rules={[{required:true, message:"Please enter your password"},{min:6,message:"Password must be at least 6 characters"}]}>
                 <Input.Password/>
                 </Form.Item>
                 <Form.Item label="Confirm Password" name="confirm"

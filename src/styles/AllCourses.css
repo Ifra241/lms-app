@@ -1,43 +1,29 @@
-.Container{
- width: calc(100%)-300;
- height: calc(100%);
-  padding: 40px 20px;
-  position: fixed;
-  top:0;
-}
-.Container>div
-{
-width: calc(100%)-300;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: calc(100%);
-
-}
-.Course_title{
-    font-size: 30px;
-  font-family: 'Times New Roman', Times, serif;
-
-}
-
-.chart
-{
-  width: 800px;
-   height: 600px;
-   margin: 90px;
-}
 .course-card {
-  border-radius: 10px;
+  min-width: 250px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
 .course-card:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
 .course-thumbnail {
   height: 180px;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
 }
 
-.card-description{
-  color:#888;
+.card-description {
+  color: #888;
+}
+.chart {
+  width:60%;
+  height: 450px;
 }

@@ -3,8 +3,9 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import ProfileHeader from "../../components/ProfileHeader";
 import { LogOut } from "../../components/logout";
 import "../../styles/Dashbord.css";
+import LmsHeader from "../../components/Header";
 
-const { Content, Sider } = Layout;
+const { Content, Sider,Header } = Layout;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -13,6 +14,13 @@ const AdminDashboard = () => {
   const selectedKey = location.pathname.split("/")[2] || "stats";
 
   return (
+    <>
+    <Layout >
+      {/* TOP HEADER */}
+      <Header className="Lms-Header">
+        <LmsHeader/>
+      </Header>
+
     <Layout>
       <Sider className="Lms-Sider" theme="light" width={220}>
         <div className="Sider-title">Admin</div>
@@ -51,6 +59,8 @@ const AdminDashboard = () => {
         </Content>
       </Layout>
     </Layout>
+    </Layout>
+    </>
   );
 };
 

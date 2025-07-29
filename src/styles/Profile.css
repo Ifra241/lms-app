@@ -12,14 +12,11 @@
    
 }
 .Profile_Container{
-     height: 100vh;
-    width: 100vw;   
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    
    
-       background: linear-gradient(135deg, #f6f6f7, #919090); 
 
 
 }
