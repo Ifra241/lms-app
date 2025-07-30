@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Col, Row, Spin, message,Typography } from "antd";
+import { Col, Row, Spin, message,Typography, Empty } from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
-import { getCoursesByTeacher } from "../services/courseService";
-import type { Course} from "../types/course.types";
+import { getCoursesByTeacher } from "../Services/courseService";
+import type { Course} from "../Types/course.types";
 import "../styles/AllCourses.css"
-import { getProfile } from "../services/adminService";
-import CourseCard from "../components/CourseCard";
+import { getProfile } from "../Services/adminService";
+import CourseCard from "../Components/CourseCard";
 const{Title}=Typography
 
 
@@ -37,7 +37,8 @@ const MyCourses =()=>{
     fetchCourses();
   },[user]);
 
-  if(loading)return<Spin tip="Loading Courses..."/>
+  if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
  
 
@@ -46,10 +47,10 @@ const MyCourses =()=>{
       <div className="Container">
                     <Title className="Course_title"level={3}>My Courses  </Title>
 
-         {isBlocked?(  <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are Blocked!</p>
+         {isBlocked?( <Empty className="Empty_Box"   description="You are Blocked!"/>
          ):
-         courses.length===0?(
-                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>No course</p>
+         courses.length===0?(<Empty  className="Empty_Box"description="No course.Create a course to see My Courses"/>
+                
 
 
                ):(

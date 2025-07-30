@@ -9,7 +9,6 @@ import CourseDetail from "../pages/CourseDetail"
 import AllCourses from "../pages/AllCourses";
 import DashboardHome from "../pages/StudyCourses";
 import TeacherDashbord from "../pages/TeacherDashbord";
-import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 import StatsCards from "../pages/AdminDashboard/StatsCards";
 import AdminCourses from "../pages/AdminDashboard/Courses";
 import TeacherSummary from "../pages/AdminDashboard/TeacherSummary";
@@ -40,7 +39,7 @@ export default function AppRoutes(){
                  <Route path="profile-detail" element={<ProfileDetailPage />} />
 
               </Route>
-                            <Route path="admin"element={<ProtectAdminRoute><AdminDashboard/> </ProtectAdminRoute>}>
+                            <Route path="admin"element={<ProtectAdminRoute><Dashboard/></ProtectAdminRoute>}>
                             <Route index element={<StatsCards />} />
                            <Route path="stats"element={<StatsCards/>}/>
                            <Route path="courses"element={<AdminCourses/>}/>

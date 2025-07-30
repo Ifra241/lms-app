@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {  Col, Row, Spin, message,Typography } from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
-import { getAllCourses, enrollCourse, getEnrolledCourses } from "../services/courseService";
-import type { Course } from "../types/course.types";
+import { getAllCourses, enrollCourse, getEnrolledCourses } from "../Services/courseService";
+import type { Course } from "../Types/course.types";
 import "../styles/AllCourses.css"
-import CourseCard from "../components/CourseCard";
+import CourseCard from "../Components/CourseCard";
 const{Title}=Typography
 
 
@@ -46,12 +46,13 @@ const AllCourses = () => {
     }
   };
 
-  if (loading) return <Spin tip="Loading Courses..." />;
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
 
     return(
         <div className="Container">
-            <Title className="Course_title"level={3}> Enrolled Courses  </Title>
+            <Title className="Course_title"level={3}> All Courses  </Title>
 
             <Row gutter={[18,12]}>
   {courses.map((course) => (

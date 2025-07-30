@@ -1,11 +1,11 @@
 import { useState,useEffect } from "react";
-import TeacherChart from "../components/TeacherChart";
-import {getCourseStats,getUniqueStudents} from "../services/courseService";
+import TeacherChart from "../Components/TeacherChart";
+import {getCourseStats,getUniqueStudents} from "../Services/courseService";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store";
+import type { RootState } from "../Store/Store";
 import { Col, Row, Spin ,Statistic,Card} from "antd";
 import { Link } from "react-router-dom";
-import StudentSummaryModal from "../components/StudentSummaryModal";
+import StudentSummaryModal from "../Components/StudentSummaryModal";
 import "../styles/TeacherDash.css"
 
 
@@ -46,7 +46,13 @@ const TeacherDashbord=()=>{
         fetchStats();
 
     },[userId,role]);
-      if (loading) return <Spin tip="Loading Chart..." />;
+    if (loading)
+  return (
+    <div className="Loading">
+      <Spin size="large" />
+    </div>
+  );
+
 
       //calculate total
       const totalCourses = stats.length;

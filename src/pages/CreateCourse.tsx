@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button,Input,Form,Upload, message, Card } from "antd";
+import { Button,Input,Form,Upload, message, Card, Spin } from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadChangeParam } from 'antd/es/upload/interface';
-import { uploadThumbnail,createCourse } from "../services/courseService";
-import type { CreateCourseFormValues } from "../types/course.types";
+import { uploadThumbnail,createCourse } from "../Services/courseService";
+import type { CreateCourseFormValues } from "../Types/course.types";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/CreateCourse.css";
-import { getProfile } from "../services/adminService";
-import { capitalizeWords} from "../utils/capitalizeWords";
+import { getProfile } from "../Services/adminService";
+import { capitalizeWords} from "../Utils/capitalizeWords";
 
 
 const CreateCourse =()=>{
@@ -85,6 +85,9 @@ const CreateCourse =()=>{
             }
             setLoading(false);
         }
+        if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
+
     
 
 

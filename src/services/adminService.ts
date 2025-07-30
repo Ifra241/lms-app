@@ -141,6 +141,23 @@ export const blockCourse=async(courseId:string,isBlocked:boolean)=>{
 };
 return data;
 };                
+// user detail
+export const getUserDetailsFromView = async (userId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("user_detailed_profile_view")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+
+    return data;
+  } catch (err) {
+    console.error("Failed to fetch user details:", err);
+    throw err;
+  }
+};
 
 
 

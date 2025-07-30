@@ -1,10 +1,10 @@
 import { useState,useEffect } from "react";
-import { getEnrolledCourses } from "../services/courseService";
-import type { Course } from "../types/course.types";
-import {Row, Col, Spin, Typography} from "antd";
+import { getEnrolledCourses } from "../Services/courseService";
+import type { Course } from "../Types/course.types";
+import {Row, Col, Spin, Typography, Empty} from "antd";
 import { useUser } from "@supabase/auth-helpers-react";
-import { getProfile } from "../services/adminService";
-import CourseCard from "../components/CourseCard";
+import { getProfile } from "../Services/adminService";
+import CourseCard from "../Components/CourseCard";
 
 
 const{Title}=Typography
@@ -43,7 +43,9 @@ const DashboardHome=()=>{
         fetchCourses();
     },[userId]);
 
-    if(loading)return<Spin tip="Loadin enroll course.."/>;
+ if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
+
    
 
 
@@ -51,9 +53,11 @@ const DashboardHome=()=>{
         <div className="Container">
             <Title className="Course_title"level={3}> Enrolled Courses  </Title>
              {isBlocked?(
-                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are Blocked!</p>
+                <Empty  className="Empty_Box" description="You are Blocked!"/>
+              
             ):courses.length ===0?(
-                <p style={{ color: "red", fontWeight: "bold", fontSize: "16px" }}>You are not enrolled in any course!</p>
+                <Empty className="Empty_Box" description="You are not Enrolled in any course"/> 
+                
             ):
             (
            <Row gutter={[16, 16]}>

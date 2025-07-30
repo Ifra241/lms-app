@@ -1,9 +1,8 @@
 import { Modal, Progress } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { markChapterAsWatched } from "../services/courseService";
+import { markChapterAsWatched } from "../Services/courseService";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store";
-
+import  type { RootState } from "../Store/Store";
 interface VideoModalProps {
   open: boolean;
   videoUrl: string;

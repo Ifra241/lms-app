@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import{ getCurrentUser } from "../services/authService";
+import{ getCurrentUser } from "../Services/authService";
 
 
 interface ProtectedRouteProps{

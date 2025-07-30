@@ -1,8 +1,8 @@
 import { useEffect,useState } from "react";
 import {  message, Popconfirm, Spin, Table, Tag } from "antd";
-import { getStudentSummary } from "../../services/adminService";
+import { getStudentSummary } from "../../Services/adminService";
 import type { ColumnsType } from "antd/es/table";
-import { blockStudent } from "../../services/adminService";
+import { blockStudent } from "../../Services/adminService";
 
 type SummaryItem={
     email:string,
@@ -102,7 +102,9 @@ const StudentSummary=()=>{
         },
 
     ];
-    if(loading)return<Spin size="large"></Spin>
+    if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
+
     return(
         <div className="Container">
             <h2>Student Summary</h2>

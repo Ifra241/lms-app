@@ -1,5 +1,4 @@
 
-
 .Row-Container {
   width: 100%;
   display: flex;
@@ -14,6 +13,12 @@
   background-color: aliceblue;
   width: 200px;
   text-align: center;
+}
+.Loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 

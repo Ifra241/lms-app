@@ -1,4 +1,5 @@
 import { ResponsiveBar } from '@nivo/bar';
+import {  Empty } from 'antd';
 
 type ChartProps = {
   data: {
@@ -8,6 +9,12 @@ type ChartProps = {
 };
 
 const TeacherChart = ({ data }: ChartProps) => {
+  if(data.length === 0){
+    return(
+        <Empty style={{marginTop:"15%"}} description="No Data available.Create Course to See Statistics"/>
+
+    )
+  }
   return (
     <div className='chart'>
             <h2 style={{ textAlign: "center", marginBottom: 30 }}>Course Preview</h2>

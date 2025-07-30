@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import { blockTeacher, getTeacherSummary } from "../../services/adminService";
+import { blockTeacher, getTeacherSummary } from "../../Services/adminService";
 import {message, Select, Spin, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
@@ -62,7 +62,8 @@ setLoadingTeacher(email);
     setLoadingTeacher(null);
   }
 };
-if(loading)return<Spin size="large"></Spin>
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
 
     

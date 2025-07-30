@@ -1,15 +1,15 @@
 import { useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
-import { getChapterBycourseId,getCourseById,getEnrolledCourses,deleteChapter, getWatchedChapter} from "../services/courseService";
+import { getChapterBycourseId,getCourseById,getEnrolledCourses,deleteChapter, getWatchedChapter} from "../Services/courseService";
 import { Card, Typography, Table, message,Spin,Row,Col ,Button} from "antd";
-import type { Course,Chapter } from "../types/course.types";
-import AddChapterModal from "../components/AddChapterModal";
+import type { Course,Chapter } from "../Types/course.types";
+import AddChapterModal from "../Components/AddChapterModal";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store";
+import  type { RootState } from "../Store/Store";
 import { EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined,MessageOutlined} from "@ant-design/icons";
 import { Tooltip,Popconfirm } from "antd";
-import VideoPlayerModal from "../components/VideoPlayerModal";
-import ChatModal from "../components/ChatModal";
+import VideoPlayerModal from "../Components/VideoPlayerModal";
+import ChatModal from "../Components/ChatModal";
 
 
 
@@ -113,7 +113,8 @@ const handelDelete=async(chapterId:string)=>{
       setEditingChapter(null);
     };
 
-   if (loading) return <Spin tip="Loading..."/>;
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
   if (!course) return <div>Course not found</div>;
 

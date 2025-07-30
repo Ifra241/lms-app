@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
-import { sendMessage, fetchMessages ,subscribeToMessages, type Messages, deleteMessage} from "../../services/chatService";
+import { sendMessage, fetchMessages ,subscribeToMessages, type Messages, deleteMessage} from "../../Services/chatService";
 import { Input, Spin, Button } from "antd";
 import "../../styles/ChatRoom.css";
-import { getMessageGroupLabel } from "../../utils/getMessageGroupLabel";
+import{DeleteOutlined } from "@ant-design/icons";
+import { getMessageGroupLabel } from "../../Utils/getMessageGroupLabel";
 
 type Props = {
   senderId: string;
@@ -120,7 +121,8 @@ const handleDelete=async(messageId:string)=>{
           <div className={`message-bubble ${isCurrentUser ? "sender" : "receiver"}`}>
             <div className="message-text">{msg.message}</div>
             {selectedMessageId===msg.id && isCurrentUser &&(
-              <button onClick={(e)=>{e.stopPropagation(); handleDelete(msg.id)}} className="delete-button ">Delete</button>
+              <Button   icon={<DeleteOutlined />}
+ onClick={(e)=>{e.stopPropagation(); handleDelete(msg.id)}} className="delete-button "></Button>
             )}
             <div className="Time_container">
               {new Date(msg.created_at).toLocaleTimeString([], {

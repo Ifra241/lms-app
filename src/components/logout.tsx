@@ -1,5 +1,5 @@
 import { Popconfirm,Button } from "antd";
-import { logout } from "../Slice/authSlice";
+import { logout } from "../Store/Slice/authSlice";
 import { supabase } from "../supabase/supabaseClient";
 import{LogoutOutlined} from "@ant-design/icons";
 import { useDispatch } from "react-redux";

@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+/*import { Layout, Menu } from "antd";
 import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import ProfileHeader from "../../components/ProfileHeader";
 import { LogOut } from "../../components/logout";
@@ -16,7 +16,6 @@ const AdminDashboard = () => {
   return (
     <>
     <Layout >
-      {/* TOP HEADER */}
       <Header className="Lms-Header">
         <LmsHeader/>
       </Header>
@@ -64,4 +63,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminDashboard;*/

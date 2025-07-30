@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import { Avatar, Button, Form, Input, Spin, Typography, message ,Card} from "antd";
-import { getCurrentUserProfile,getCurrentUser,updateProfile } from "../services/authService";
-import  type { UserProfile } from "../types/auth";
+import { getCurrentUserProfile,getCurrentUser,updateProfile, uploadProfilePic } from "../Services/authService";
+import  type { UserProfile } from "../Types/auth";
 import "../styles/Profile.css"
 
 
@@ -11,13 +11,14 @@ const { Title,Text } = Typography;
 
 type ProfileFormValues = {
   full_name: string;
-  profile_pic: string;
-  bio?: string;
+  profile_pic: string|File;
 };
  const ProfileDetailPage=()=>{
     const[loading,setLoading]=useState(true);
       const [profile, setProfile] = useState<UserProfile | null>(null);
         const [email, setEmail] = useState("");
+        const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 
 
         const [form] = Form.useForm();
@@ -36,7 +37,10 @@ type ProfileFormValues = {
       try {
         const profileData = await getCurrentUserProfile();
         setProfile(profileData);
-        form.setFieldsValue(profileData); // prefill the form
+               form.setFieldsValue({
+  full_name: profileData.full_name,
+  email: user.email
+}); // prefill the form
       } catch (error) {
         console.error("Failed to fetch profile", error);
       } finally {
@@ -45,19 +49,39 @@ type ProfileFormValues = {
     };
     fetch();
   }, [form]);
+  const onFinish = async (values: ProfileFormValues) => {
+  try {
+    let profilePicUrl = profile?.profile_pic;
 
-  const onFinish=async(values:ProfileFormValues)=>{
-     try {
-      const updated = await updateProfile(values);
-      setProfile(updated);
-      message.success("Profile updated successfully!");
-    } catch (error) {
-      console.error("Update failed", error);
-      message.error("Failed to update profile");
+    if (selectedFile) {
+      const uploadedUrl = await uploadProfilePic(selectedFile);
+      if (!uploadedUrl) {
+        message.error("Failed to upload image");
+        return;
+      }
+      profilePicUrl = uploadedUrl;
     }
-  };
 
-  if (loading) return <Spin size="large" />;
+    const updated = await updateProfile({
+      full_name: values.full_name,
+      profile_pic: profilePicUrl,
+    });
+
+    setProfile(updated);
+    const refreshed = await getCurrentUserProfile();
+setProfile(refreshed);
+
+    message.success("Profile updated successfully!");
+  } catch (error) {
+    console.error("Update failed", error);
+    message.error("Failed to update profile");
+  }
+};
+
+
+  
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
 
   return(
@@ -66,7 +90,7 @@ type ProfileFormValues = {
 
       <Card className="Profile_Wrapper">
         
-        <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <div className="Profile_title">
             <h2>My Profile</h2>
           <Avatar size={100} src={profile?.profile_pic} />
           <Title level={3}>{profile?.full_name}</Title>
@@ -80,12 +104,22 @@ type ProfileFormValues = {
             <Input />
           </Form.Item>
 
-          <Form.Item label="Email" name="email">
-            <Input/>
-          </Form.Item>
+         
 
-          
-          <Form.Item>
+<Form.Item label="Profile Picture">
+  <Input
+    type="file"
+    accept="image/*"
+    onClick={(e) => e.stopPropagation()}
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setSelectedFile(file); 
+      }
+    }}
+  />
+</Form.Item>
+              <Form.Item>
             <Button type="primary" htmlType="submit">Update Profile</Button>
           </Form.Item>
         </Form>

@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import { Progress, Table,Switch, message, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { blockCourse, getAllCoursesWithEnrollments } from "../../services/adminService";
+import { blockCourse, getAllCoursesWithEnrollments } from "../../Services/adminService";
 
 
 type CourseItem = {
@@ -47,7 +47,8 @@ setCourses((prev)=>prev.map((item)=>item.id===courseId?{...item,is_blocked:!isBl
   setLoadingCourseId(null);
  }
       };
-      if(loading)return<Spin size="large"></Spin>
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
      
 
 

@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
-import AdminStats from "../../components/AdminStats";
-import { getAdminStats, getAllUsers } from "../../services/adminService";
-import UserTabel from "../../components/UserTable";
+import AdminStats from "../../Components/AdminStats";
+import { getAdminStats, getAllUsers } from "../../Services/adminService";
+import UserTabel from "../../Components/UserTable";
 import Card from "antd/es/card/Card";
 import { Spin } from "antd";
 import "../../styles/StatsCard.css";
@@ -30,7 +30,8 @@ const StatsCard=()=>{
         };
         fetchStats();
     },[])
-    if (loading)return<Spin size="large"></Spin>
+if(loading)return <div className="Loading">
+<Spin tip="Loading Courses..."/></div>
 
     
     return(

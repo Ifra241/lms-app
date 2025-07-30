@@ -5,20 +5,32 @@
   align-items: center;
   text-align: center;
   padding: 0 24px;
-  background:#dddddd;
-  color:darkorange ;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2px;
+  background:#ffffff;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color:  #3a3f58;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right:0;
+  height: 80px;
+  z-index: 5;
 }
 
 .Lms-Sider {
-  border:1px solid yellow;
   height: calc(100vh - 80px); 
   color: rgb(16, 16, 16);
   overflow-y: auto;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 200px;
+  
 }
 .Sider-title{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
     padding: 16px;
     text-align: center;
     
@@ -37,8 +49,20 @@
   color: #ffffff !important;
 }
 .Lms-Content {
-   border:1px solid blue;
-   margin-right: 2px
+   margin-right: 2px;
+   margin-left: 210px; 
+margin-top: 80px;    
+height: calc(100vh - 80px);
+overflow-y: auto;
+
+}
+.Footer{
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  padding: 10px,16px;
+
 }
 
 

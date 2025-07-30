@@ -1,12 +1,12 @@
 import {Card ,Form, Input, Button, Typography,message, Upload} from 'antd';
 import { Link,useNavigate } from 'react-router-dom';
-import { signUpUser, uploadProfilePic} from '../services/authService';
+import { signUpUser, uploadProfilePic} from '../Services/authService';
 import { UploadOutlined } from "@ant-design/icons";
 import "../styles/login.css"
 
 
 
-import type { SignupFormValues } from '../types/auth';
+import type { SignupFormValues } from '../Types/auth';
 
 const { Title } = Typography;
 
@@ -33,7 +33,7 @@ export default function Signup() {
            
 
     
-        const res=await signUpUser ({  email,  password,  fullName,profilePic:profilePicUrl,})
+        const res=await signUpUser ({  email,  password,  fullName,profilePicUrl:profilePicUrl,})
             message.success('Account created!')
             console.log('signup Sucess:',res);
             navigate('/')

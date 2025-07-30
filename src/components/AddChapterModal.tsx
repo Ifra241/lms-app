@@ -2,9 +2,9 @@ import { Modal ,Form,Input, Upload, Button, message} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
-import { addChapter, uploadVedio ,updateChapter} from "../services/courseService";
-import type { Chapter } from "../types/course.types";
-import { capitalizeWords } from "../utils/capitalizeWords";
+import { addChapter, uploadVedio ,updateChapter} from "../Services/courseService";
+import type { Chapter } from "../Types/course.types";
+import { capitalizeWords } from "../Utils/capitalizeWords";
 
 interface ModalProps{
     open:boolean;

@@ -1,6 +1,6 @@
 import { supabase } from '../supabase/supabaseClient';
 
-import type { SignupFormValues,LoginFormValues, UserProfile } from "../types/auth";
+import type { SignupFormValues,LoginFormValues, UserProfile } from "../Types/auth";
 
 //Signup
 
@@ -122,6 +122,17 @@ export const updateProfile=async(updatedData:Partial<UserProfile>)=>{
 
   const{ data:profile,error}=await supabase.from("profile").update(updatedData).eq("id", userId);
    if (error) throw error;
+   const { full_name, profile_pic } = updatedData;
+
+  const { error: authError } = await supabase.auth.updateUser({
+    data: {
+      fullName: full_name,
+      profilePic: profile_pic,
+    },
+  });
+
+  if (authError) throw authError;
+
   return profile;
 };
 

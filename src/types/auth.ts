@@ -3,7 +3,7 @@ export type SignupFormValues = {
   password: string;
   fullName: string;
   profilePic?: string|null;
-  profilePicUrl?:string;
+  profilePicUrl?:string|null;
 };
 
 export type LoginFormValues = {

@@ -1,7 +1,7 @@
 import { supabase } from "../supabase/supabaseClient";
-import type { CreateCourseFormValues} from "../types/course.types";
-import type { Course } from "../types/course.types";
-import type{Chapter}from "../types/course.types"
+import type { CreateCourseFormValues} from "../Types/course.types";
+import type { Course } from "../Types/course.types";
+import type{Chapter}from "../Types/course.types"
 
 
 //uplodthumbnail function

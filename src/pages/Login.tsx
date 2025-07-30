@@ -1,9 +1,9 @@
 import { Card,Form,Input,Button,message } from "antd";
 import { Link ,useNavigate} from "react-router-dom";
-import { loginUser } from "../services/authService";
-import type { LoginFormValues } from "../types/auth";
+import { loginUser } from "../Services/authService";
+import type { LoginFormValues } from "../Types/auth";
 import { useDispatch } from "react-redux";
-import { setUser } from "../Slice/authSlice";
+import { setUser } from "../Store/Slice/authSlice";
 import { supabase } from "../supabase/supabaseClient";
 import "../styles/login.css"
 
@@ -54,7 +54,7 @@ import "../styles/login.css"
       message.success("Login successful");
 
       if (role === "admin") {
-        navigate("/admin");
+        navigate("/admin/");
       } else {
         navigate("/dashboard");
       }

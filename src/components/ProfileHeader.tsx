@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getCurrentUserProfile } from "../services/authService";
+import { getCurrentUserProfile } from "../Services/authService";
 import { Spin, Typography, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
@@ -30,7 +30,7 @@ const ProfileHeader = () => {
   if (loading) return <Spin size="small" />;
 
   return (
-    <div style={{ padding:"2px",textAlign: "center" }}>
+    <div style={{textAlign: "center"}}>
       <Avatar
         size={40}
         icon={!avatarUrl && <UserOutlined />}

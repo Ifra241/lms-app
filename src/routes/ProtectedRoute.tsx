@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
-import type { RootState } from "../store";
+import type { RootState } from "../Store/Store";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -14,7 +14,11 @@ const AccessRoute = ({ children, requireAuth, onlyPublic }: ProtectedRouteProps)
   const isAuthenticated = !!user?.id;
 
   if (onlyPublic && isAuthenticated) {
+    if(user.role==="admin"){
+      return<Navigate to="/admin" replace/>
+    }else{
     return <Navigate to="/dashboard" replace />;
+    }
   }
 
   if (requireAuth && !isAuthenticated) {
