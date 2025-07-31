@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../Store/Store";
+import type { RootState } from "../../Store/store";
 import { sendMessage, fetchMessages ,subscribeToMessages, deleteMessage, type Messages,} from "../../Services/chatService";
 import { Input, Spin, Button } from "antd";
 import "../../styles/ChatRoom.css";

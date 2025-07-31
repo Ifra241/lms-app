@@ -5,7 +5,7 @@ import type { RootState } from "../Store/store";
 
 import ProfileHeader from "../Components/ProfileHeader";
 import LmsHeader from "../Components/Header";
-import { LogOut } from "../Components/Logout";
+import { LogOut } from "../Components/logout";
 import "../styles/Dashbord.css";
 
 const { Header, Content, Sider } = Layout;
