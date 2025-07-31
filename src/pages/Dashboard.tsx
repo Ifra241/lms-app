@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../Store/store";
 
 import ProfileHeader from "../Components/ProfileHeader";
-import { LogOut } from "../Components/Logout";
 import LmsHeader from "../Components/Header";
+import { LogOut } from "../Components/Logout";
 import "../styles/Dashbord.css";
 
 const { Header, Content, Sider } = Layout;

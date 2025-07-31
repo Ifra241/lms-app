@@ -2,7 +2,7 @@ import { Modal, Table } from "antd";
 import { useEffect, useState } from "react";
 import { getTeacherStudentSummary } from "../Services/courseService";
 import { useSelector } from "react-redux";
-import type { RootState } from "../Store/Store";
+import type { RootState } from "../Store/store";
 type SummaryItem = {
   student_name: string;
   total_enrollments: number;
