@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../store";
-import { sendMessage, fetchMessages ,subscribeToMessages, type Messages, deleteMessage} from "../../Services/chatService";
+import type { RootState } from "../../Store/Store";
+import { sendMessage, fetchMessages ,subscribeToMessages, deleteMessage, type Messages,} from "../../Services/chatService";
 import { Input, Spin, Button } from "antd";
 import "../../styles/ChatRoom.css";
 import{DeleteOutlined } from "@ant-design/icons";
@@ -34,20 +34,31 @@ const ChatRoom = ({ senderId, courseId}: Props) => {
 
 const currentUser = useSelector((state: RootState) => state.auth);
 const currentUserId = currentUser?.id??"";
-
+  
+// Load existing messages
   const loadMessages = async () => {
       setLoading(true);
 
        try {
-      const data = await fetchMessages(courseId);
-      setMessages(data);
+        const data = await fetchMessages(courseId);
+
+if (data) {
+  setMessages(
+    data.map((msg) => ({
+      ...msg,
+      sender: Array.isArray(msg.sender) ? msg.sender[0] : msg.sender,
+    }))
+  );
+}
+
+     
     } catch (err) {
       console.error("Error loading messages!", err);
     } finally {
       setLoading(false);
     }
   };
-
+  // Send a new message
   const handleSend = async () => {
     if (!input.trim()) return;
     try {
@@ -57,6 +68,7 @@ const currentUserId = currentUser?.id??"";
       console.error("Error sending message", err);
     }
   };
+    // Subscribe to new messages on mount
   useEffect(() => {
     loadMessages();
     const unsubscribe=subscribeToMessages(courseId,(newMessage:Messages)=>{
@@ -67,11 +79,13 @@ const currentUserId = currentUser?.id??"";
     };
   }, [currentUserId, senderId,courseId]);
 
+  // Scroll to bottom on message change
 useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  //DTAE Day
+  // Group messages by date
+
   const groupedMessages:{[key:string]:Message[]}={};
   
   messages.forEach((msg)=>{

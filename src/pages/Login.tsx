@@ -42,15 +42,6 @@ import "../styles/login.css"
         })
       );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: user.id,
-          email: user.email ?? "",
-          role,
-        })
-      );
-
       message.success("Login successful");
 
       if (role === "admin") {

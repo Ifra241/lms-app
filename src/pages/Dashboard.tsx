@@ -1,7 +1,7 @@
 import { Layout, Menu } from "antd";
 import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import type { RootState } from "../Store/Store";
+import type { RootState } from "../Store/store";
 
 import ProfileHeader from "../Components/ProfileHeader";
 import { LogOut } from "../Components/Logout";

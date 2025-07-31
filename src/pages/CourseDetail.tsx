@@ -5,7 +5,7 @@ import { Card, Typography, Table, message,Spin,Row,Col ,Button} from "antd";
 import type { Course,Chapter } from "../Types/course.types";
 import AddChapterModal from "../Components/AddChapterModal";
 import { useSelector } from "react-redux";
-import  type { RootState } from "../Store/Store";
+import  type { RootState } from "../Store/store";
 import { EyeOutlined, EditOutlined, DeleteOutlined, CheckOutlined,MessageOutlined} from "@ant-design/icons";
 import { Tooltip,Popconfirm } from "antd";
 import VideoPlayerModal from "../Components/VideoPlayerModal";
@@ -72,7 +72,6 @@ try{
         setIsEnrolled(isEnrolled);
 
         const watched =await getWatchedChapter(userId);
-        console.log("Watched chapters:", watched);
         setWatchedChapters(watched);
     }
 
@@ -171,7 +170,6 @@ if(loading)return <div className="Loading">
   dataIndex: "video_url",
   render: (_: unknown, chapter: Chapter) => {
     const isWatched = watchedChapters.includes(chapter.id!);
-    console.log("ChapterID",chapter.id,"watched",isWatched)
     
     return (
       <Tooltip title={isWatched ? "Watched" : "Watch Video"}>

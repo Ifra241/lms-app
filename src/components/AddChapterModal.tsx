@@ -25,7 +25,6 @@ const [form]=Form.useForm();
 const handleVedioChange=(info: UploadChangeParam<UploadFile>)=>{
       const latestFile = info.fileList[info.fileList.length - 1]?.originFileObj;
 
-    console.log("Video file:", latestFile);
 
     if(latestFile)setVideo(latestFile as File)
 };
@@ -55,7 +54,6 @@ const handleSubmit= async(values:{title:string})=>{
          videoUrl = await uploadVedio(video);
        }
        //Editing Mode
-       console.log("Updating chapter with ID:", editingChapter?.id);
 
 if(editingChapter?.id){
   await updateChapter(editingChapter.id,{
@@ -116,6 +114,8 @@ if(editingChapter?.id){
            showUploadList={false}>
                         <Button icon={<UploadOutlined/>}>Upload Video</Button>
                     </Upload>
+                       {video && <p className="mt-2">Selected: {video.name}</p>}
+
 
                 </Form.Item>
 

@@ -29,7 +29,7 @@ const TeacherSummary=()=>{
             try{
               setLoading(true);
                 const summary=await getTeacherSummary();
-                setData(summary);
+                setData(summary??[]);
             }catch(error){
                 console.error("Failed to fetch",error);
             }finally{

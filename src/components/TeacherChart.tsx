@@ -17,7 +17,7 @@ const TeacherChart = ({ data }: ChartProps) => {
   }
   return (
     <div className='chart'>
-            <h2 style={{ textAlign: "center", marginBottom: 30 }}>Course Preview</h2>
+            <h2>Course Preview</h2>
 
       <ResponsiveBar
                 data={data}

@@ -7,6 +7,7 @@ export type MessageProp={
 }
 //Send message
 export const sendMessage=async({currentUserId,message,courseId,}:MessageProp)=>{
+  try{
     const{data,error}=await supabase.from("messages").insert([
         {
           sender_id: currentUserId,
@@ -19,10 +20,14 @@ if(error){
     console.error("Failed to snd msg",error)
     throw error;
 }return data
+}catch(err){
+  console.error("Failed to send msg",err);
+}
 
 };
 //fetch message
 export const fetchMessages = async (courseId: string) => {
+  try{
   const { data, error } = await supabase
     .from("messages")
     .select(`id,message,created_at,sender_id,sender:sender_id (  full_name)`)
@@ -36,23 +41,33 @@ export const fetchMessages = async (courseId: string) => {
     throw error;
   }
   return data;
+  }catch(err){
+    console.error("Failed to fetch msg",err);
+  }
 };
 //Delete
 export const deleteMessage=async(messageId:string)=>{
+  try{
   const{data,error}=await supabase.from("messages").delete().eq("id",messageId);
   if(error)throw error;
   return data;
-}
+  }catch(err){
+    console.error("Failed to Delet Msg",err);
+  }
+};
 
 
 ///
 export type Messages = {
   id: string;
-  content: string;
+  message: string;
   sender_id: string;
   receiver_id?: string;
   course_id: string;
   created_at: string;
+  sender:{
+    full_name:string;
+  }
 };
 export const subscribeToMessages = (
   courseId: string,
@@ -69,6 +84,7 @@ export const subscribeToMessages = (
       },
       (payload) => {
         const newMessage = payload.new as Messages;
+
 
         // Filter manually to ensure correct course
         if (newMessage.course_id === courseId) {

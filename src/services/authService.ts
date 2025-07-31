@@ -15,6 +15,7 @@ export async function signUpUser({
   
 
    const{data:signUpData,error:signUpError} = await supabase.auth.signUp({
+
         email,
         password,
         options:{
@@ -43,6 +44,7 @@ export async function signUpUser({
       if(Error)throw Error;
     }
     return signUpData;
+    
 };
 //Login
 export async function loginUser({email,password}:LoginFormValues){
@@ -55,9 +57,12 @@ export async function loginUser({email,password}:LoginFormValues){
 //Get User
 
 export const getCurrentUser= async()=>{
-
+try{
     const{data,error}=await supabase.auth.getUser();
     return{user:data?.user,error};
+    }catch(err){
+      console.error("Something went wrong while geting curentUser",err);
+    }
 };
 //Upload Profile Img
 export const uploadProfilePic = async (file: File): Promise<string | null> => {
@@ -87,7 +92,6 @@ export const uploadProfilePic = async (file: File): Promise<string | null> => {
     return null;
   }
 
-  console.log("Uploaded image URL:", publicUrlData.publicUrl);
   return publicUrlData.publicUrl;
 };
 
@@ -95,6 +99,7 @@ export const uploadProfilePic = async (file: File): Promise<string | null> => {
 //get currn user profile
 
 export const getCurrentUserProfile = async () => {
+  try{
   const { data: authData, error: authError } = await supabase.auth.getUser();
   if (authError) throw authError;
 
@@ -110,10 +115,14 @@ export const getCurrentUserProfile = async () => {
   if (profileError) throw profileError;
 
   return profileData;
+  }catch(err){
+    console.error("Failed to get current user Profile",err);
+  }
 };
 //update profile
 
 export const updateProfile=async(updatedData:Partial<UserProfile>)=>{
+  try{
   const { data: user } = await supabase.auth.getUser();
   const userId = user?.user?.id;
   if (!userId) throw new Error("User not logged in");
@@ -134,6 +143,9 @@ export const updateProfile=async(updatedData:Partial<UserProfile>)=>{
   if (authError) throw authError;
 
   return profile;
+  }catch(err){
+    console.error("failed to update Profile",err)
+  }
 };
 
 

@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import TeacherChart from "../Components/TeacherChart";
 import {getCourseStats,getUniqueStudents} from "../Services/courseService";
 import { useSelector } from "react-redux";
-import type { RootState } from "../Store/Store";
+import type { RootState } from "../Store/store";
 import { Col, Row, Spin ,Statistic,Card} from "antd";
 import { Link } from "react-router-dom";
 import StudentSummaryModal from "../Components/StudentSummaryModal";
@@ -25,8 +25,6 @@ const TeacherDashbord=()=>{
       const [open, setOpen] = useState(false);
 
     useEffect(()=>{
-        console.log("userId:", userId);
-  console.log("role:", role);
 
       const fetchStats=async()=>{
             if(!userId)return;
@@ -101,7 +99,12 @@ const TeacherDashbord=()=>{
 </Row>
      
 <div>
+
+
+
+     
        <TeacherChart data={stats}  />
+    
              <StudentSummaryModal open={open} onClose={() => setOpen(false)} />
 
        </div>

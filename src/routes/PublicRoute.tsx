@@ -1,25 +1,24 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import{ getCurrentUser } from "../Services/authService";
+import { getCurrentUser } from "../Services/authService";
 
-
-interface ProtectedRouteProps{
-    children:ReactNode;
-
+interface ProtectedRouteProps {
+  children: ReactNode;
 }
-const ProtectedRoute=({ children }:  ProtectedRouteProps)=>{
-    const[loading,setLoading]=useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
-            
-      const { user} = await getCurrentUser();
+      const response = await getCurrentUser();
 
-      if (user) {
+      if (response && response.user) {
         setIsAuthenticated(true);
       }
+
       setLoading(false);
     };
 

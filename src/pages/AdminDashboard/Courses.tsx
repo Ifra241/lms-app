@@ -26,7 +26,7 @@ type CourseItem = {
           try{
             setLoading(true);
             const data =await getAllCoursesWithEnrollments();
-            setCourses(data);
+            setCourses(data??[]);
           }catch(error){
             console.error("Failed to fetch",error)
           }finally{

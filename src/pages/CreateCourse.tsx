@@ -39,8 +39,6 @@ const CreateCourse =()=>{
  const handleThumbnailChange=(info:UploadChangeParam )=>{
 
         const file = info.fileList?.[0]?.originFileObj;
-         console.log("Upload Info:", info);
-          console.log("File selected:", file);
 
         if(file){
         setThumbnail(file as File);
@@ -73,7 +71,6 @@ const CreateCourse =()=>{
                 const thumbnailUrl=await uploadThumbnail(thumbnail);
 
               const course = await createCourse(values,thumbnailUrl,user!.id);
-                   console.log("Form submitted")
                 message.success("Course created successfuly!");
                 form .resetFields();
                 setThumbnail(null);

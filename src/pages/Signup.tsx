@@ -27,15 +27,13 @@ export default function Signup() {
             let profilePicUrl=null;
             if(values.profilePic){
                 profilePicUrl=await uploadProfilePic(values.profilePic);
-                  console.log("Uploaded profilePicUrl:", profilePicUrl);
 
             }
            
 
     
-        const res=await signUpUser ({  email,  password,  fullName,profilePicUrl:profilePicUrl,})
+        await signUpUser ({  email,  password,  fullName,profilePicUrl:profilePicUrl,})
             message.success('Account created!')
-            console.log('signup Sucess:',res);
             navigate('/')
         
      }catch(err){

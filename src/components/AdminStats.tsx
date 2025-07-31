@@ -15,7 +15,7 @@ const AdminStats=({totalCourses,totalTeachers,totalStudents}:AdminStats)=>{
         <>
         <Row gutter={[16,16]}>
             <Col span={8}>
-              <Link to="/admin/courses">
+              <Link to="/admin/teachers">
                <Card  className="Total_Card">
       <Statistic 
         title="Total Teachers"
@@ -31,7 +31,7 @@ const AdminStats=({totalCourses,totalTeachers,totalStudents}:AdminStats)=>{
             
             </Col>
             <Col span={8}>
-            <Link to="/admin/teachers">
+            <Link to="/admin/courses">
              <Card  className="Total_Card">
       <Statistic 
         title="Total Courses"

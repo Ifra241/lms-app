@@ -1,83 +1,92 @@
-import { useState,useEffect } from "react";
-import { Avatar, Button, Form, Input, Spin, Typography, message ,Card} from "antd";
-import { getCurrentUserProfile,getCurrentUser,updateProfile, uploadProfilePic } from "../Services/authService";
-import  type { UserProfile } from "../Types/auth";
-import "../styles/Profile.css"
+import { useState, useEffect } from "react";
+import { Avatar, Button, Form, Input, Spin, Typography, message, Card } from "antd";
+import { getCurrentUserProfile, getCurrentUser, updateProfile, uploadProfilePic } from "../Services/authService";
+import type { UserProfile } from "../Types/auth";
+import "../styles/Profile.css";
 
-
-
-const { Title,Text } = Typography;
-
+const { Title, Text } = Typography;
 
 type ProfileFormValues = {
   full_name: string;
-  profile_pic: string|File;
+  profile_pic: string | File;
 };
- const ProfileDetailPage=()=>{
-    const[loading,setLoading]=useState(true);
-      const [profile, setProfile] = useState<UserProfile | null>(null);
-        const [email, setEmail] = useState("");
-        const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+const ProfileDetailPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [email, setEmail] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [form] = Form.useForm();
 
-
-        const [form] = Form.useForm();
-
-        
-
-
-         useEffect(() => {
+  useEffect(() => {
     const fetch = async () => {
-      const { user, error } = await getCurrentUser();
-      if (error || !user) {
-        console.error("Auth error", error);
-        return;
-      }
-      setEmail(user.email!);
       try {
+        const result = await getCurrentUser();
+        if (!result || !result.user) {
+          console.error("Auth error", result?.error);
+          return;
+        }
+
+        const user = result.user;
+        setEmail(user.email!);
+
         const profileData = await getCurrentUserProfile();
+
+        if (!profileData) {
+          console.error("Profile not found");
+          return;
+        }
+
         setProfile(profileData);
-               form.setFieldsValue({
-  full_name: profileData.full_name,
-  email: user.email
-}); // prefill the form
+
+        form.setFieldsValue({
+          full_name: profileData.full_name,
+          email: user.email,
+        });
       } catch (error) {
         console.error("Failed to fetch profile", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetch();
   }, [form]);
+
   const onFinish = async (values: ProfileFormValues) => {
-  try {
-    let profilePicUrl = profile?.profile_pic;
+    try {
+      let profilePicUrl = profile?.profile_pic;
 
-    if (selectedFile) {
-      const uploadedUrl = await uploadProfilePic(selectedFile);
-      if (!uploadedUrl) {
-        message.error("Failed to upload image");
-        return;
+      if (selectedFile) {
+        const uploadedUrl = await uploadProfilePic(selectedFile);
+        if (!uploadedUrl) {
+          message.error("Failed to upload image");
+          return;
+        }
+        profilePicUrl = uploadedUrl;
       }
-      profilePicUrl = uploadedUrl;
+
+      const updated = await updateProfile({
+        full_name: values.full_name,
+        profile_pic: profilePicUrl,
+      });
+
+      if (updated) {
+  setProfile(updated);
+}
+
+
+      const refreshed = await getCurrentUserProfile();
+      if (refreshed) {
+        setProfile(refreshed);
+      }
+
+      message.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update failed", error);
+      message.error("Failed to update profile");
     }
-
-    const updated = await updateProfile({
-      full_name: values.full_name,
-      profile_pic: profilePicUrl,
-    });
-
-    setProfile(updated);
-    const refreshed = await getCurrentUserProfile();
-setProfile(refreshed);
-
-    message.success("Profile updated successfully!");
-  } catch (error) {
-    console.error("Update failed", error);
-    message.error("Failed to update profile");
-  }
-};
-
+  };
 
   
 if(loading)return <div className="Loading">
