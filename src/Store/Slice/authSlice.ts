@@ -14,10 +14,10 @@ type AuthState = {
    profilePic?: string | null;
 };
 
-
-
-const initialState:AuthState={
-    id:null,
+const storedUser=localStorage.getItem("user");
+const initialState:AuthState=storedUser?JSON.parse(storedUser)
+:{
+ id:null,
     email:null,
     role:null,
           profilePic: null,
@@ -33,6 +33,7 @@ const authSlice =createSlice({
             state.email=action.payload.email;
             state.role=action.payload.role;
               state.profilePic = action.payload.profilePic || null;
+                 localStorage.setItem("user", JSON.stringify(state));
 
         },  
       setRole: (state, action: PayloadAction<'admin' | 'teacher' | 'student'>) => {
@@ -44,6 +45,9 @@ const authSlice =createSlice({
             state.email=null;
             state.role=null;
               state.profilePic = null;
+                          localStorage.removeItem("user");
+
+
 
         },
     },
